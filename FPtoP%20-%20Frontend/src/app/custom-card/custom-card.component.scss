@@ -1,0 +1,41 @@
+.content {
+  flex-wrap: wrap !important;
+  .pipe-card {
+    flex-grow: 1 !important;
+    width: 245px !important;
+    .header {
+      display: flex !important;
+      .title {
+        display: flex !important;
+      }
+    }
+    .contentCard {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100%;
+    }
+    .card-actions {
+      display: flex !important;
+      width: 100%;
+      flex-direction: column;
+      align-items: end !important;
+      gap: 10px;
+      .contentCard {
+        display: flex !important;
+      }
+    }
+  }
+}
+
+.info-icon {
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  padding: 4px;
+  margin-left: 6px;
+  cursor: default;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #d6d6d6;
+  }
+}
