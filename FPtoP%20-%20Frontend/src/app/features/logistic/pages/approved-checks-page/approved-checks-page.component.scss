@@ -1,0 +1,14 @@
+@import "src/themes/base/base-theme";
+@import "@slb-dls/angular-material/assets/styles/theming/dls-palette";
+@import "src/themes/light/variables";
+
+@include theme-base($dls-app-light-theme, $app-theme-config);
+/* Core Grid CSS */
+@import "ag-grid-community/styles/ag-grid.css";
+@import "ag-grid-community/styles/ag-theme-quartz.css";
+
+.content {
+  margin-bottom: 30px;
+
+  
+}

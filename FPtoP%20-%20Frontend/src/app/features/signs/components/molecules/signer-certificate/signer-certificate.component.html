@@ -1,0 +1,47 @@
+<div class="certificate-information">
+  <h2>Información del Certificado:</h2>
+
+  <!-- <div class="certificate-type">
+    Certificado en:
+    <slb-radio-button-group
+      [isVertical]="false"
+      [values]="certificateOptions"
+    ></slb-radio-button-group>
+  </div> -->
+  <div class="input-certificate">
+    Certificado en formato .p12 o .pfx:
+    <app-button
+      mat-raised-button
+      color="primary"
+      [label]="'Examinar'"
+      [isPrimary]="true"
+      (click)="fileInput.click()"
+    >
+    </app-button>
+    <input
+      #fileInput
+      type="file"
+      (change)="onCertificateSelected($event)"
+      style="display: none"
+    />
+  </div>
+
+  <div *ngIf="selectedFileName" class="file-name">
+    <p>Archivo seleccionado: {{ selectedFileName }}</p>
+  </div>
+  <form class="password-form">
+    Contraseña:
+    <input type="text" style="display: none" autocomplete="username" />
+    <input type="password" style="display: none" autocomplete="new-password" />
+
+    <div class="input-password">
+      <input
+        type="password"
+        (input)="callUpdatePasswordCertificate($event)"
+        name="certificatePassword"
+        autocomplete="new-password"
+        required
+      />
+    </div>
+  </form>
+</div>

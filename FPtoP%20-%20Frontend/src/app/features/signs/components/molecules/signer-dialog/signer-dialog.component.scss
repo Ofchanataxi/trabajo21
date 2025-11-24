@@ -1,0 +1,143 @@
+@import "src/themes/base/base-theme";
+@import "@slb-dls/angular-material/assets/styles/theming/dls-palette";
+@import "src/themes/light/variables";
+
+@include theme-base($dls-app-light-theme, $app-theme-config);
+
+pdf-viewer {
+  display: block;
+  overflow: hidden !important;
+  width: 100%;
+  height: auto;
+}
+.signQR {
+  position: fixed;
+  background-color: green;
+  z-index: 999;
+  position: absolute;
+  pointer-events: none;
+    /* Esto permite que el clic pase al div de abajo */
+}
+.ng2-pdf-viewer-container {
+  height: 100% !important;
+  width: 100% !important;
+  pointer-events: auto;
+    /* Asegúrate de que este div capture eventos */
+}
+
+.pdf-container {
+  background-color: red;
+  overflow: hidden;
+  position: relative;
+  .ng2-pdf-viewer-container {
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+  }
+}
+.signer-dialog-container {
+  .dialog-content {
+    color: white;
+    .certificate-information {
+      .certificate-type {
+        display: flex;
+        gap: 10px;
+      }
+    }
+    .password-form {
+      display: flex;
+      gap: 10px;
+    }
+  }
+
+  .mat-mdc-dialog-content {
+    padding-top: 5%;
+  }
+
+  .custom-dialog-actions {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    padding: 10px 12px 0 0 !important;
+    text-align: center;
+    button {
+      border-radius: 50%;
+      background-color: map-get($colors, shayaRed);
+      color: white;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+    }
+  }
+}
+
+.dls-dragzone-area {
+  display: flex;
+  padding: 3px 10px;
+  margin: 0px;
+  .containerUploadButton {
+    display: flex;
+    width: 100%;
+    .columnUploadButtonStatic {
+      display: flex;
+      width: 48px;
+    }
+    .columnUploadButtonFlexible {
+      display: flex;
+      flex-direction: column;
+      padding: 0px 10px;
+      flex-grow: 1;
+      flex-wrap: wrap;
+      align-self: center;
+      .title {
+        font-weight: bold;
+      }
+      .containerNameFile {
+        margin: 0px;
+      }
+      .files {
+        .containerNameFile {
+          background-color: #d9d9d9;
+          margin: 5px 0px;
+          padding: 3px 10px;
+          border-radius: 5px;
+          mat-icon {
+            height: 12px !important;
+            width: 12px !important;
+            line-height: 12px !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.dls-toast-body .dls-details {
+  word-break: break-all;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+
+  & mat-spinner {
+    width: 100px;
+    height: 100px;
+  }
+
+  .containerOverlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffff;
+  }
+}

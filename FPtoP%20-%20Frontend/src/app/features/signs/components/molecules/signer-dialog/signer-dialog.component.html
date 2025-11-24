@@ -1,0 +1,95 @@
+<div class="signer-dialog-container">
+  <div class="dialog-content" *ngIf="!isSigning">
+    <signer-certificate
+      signDocumentInformation="signDocumentInformation"
+      (updateCertificateEvent)="updateCertificate($event)"
+      (updatePasswordCertificateEvent)="updatePasswordCertificate($event)"
+    />
+
+    <!-- <div class="select-stamp">
+      Seleccione el tipo de stamp que desea usar:
+      <slb-radio-button-group
+        [isVertical]="false"
+        [values]="stampOptions"
+        (valueChanged)="onSelectedStamp($event)"
+      ></slb-radio-button-group>
+    </div> -->
+
+    <h2>Presiona donde deseas que aparezca la firma</h2>
+
+    <!-- <mat-form-field
+      slbFormField
+      [color]="'primary'"
+      [size]="'large'"
+      [ngClass]="{ 'dls-readonly': false }"
+      #field
+    >
+      <mat-label *ngIf="true">
+        {{ '¿Cuál es la condición de los elementos?' }}
+      </mat-label>
+      <mat-select
+        #input
+        [required]="false"
+        [panelClass]="'dls-panel'"
+        [placeholder]="''"
+        [disabled]="false"
+        [disableRipple]="false"
+        [disableOptionCentering]="false"
+        [hideSingleSelectionIndicator]="true"
+        (selectionChange)="onChange($event)"
+        [formControl]="conditionIDControl"
+      >
+        <mat-option *ngFor="let option of conditions" [value]="option.key">
+          {{ option.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+
+    <app-select
+      [formControl]="conditionIDControl"
+      [placeholder]="''"
+      [label]="'¿Cuál es la condición de los elementos?'"
+      [showLabel]="true"
+      [options]="numberPages"
+      (selectionChange)="selectionChangeEvent($event)"
+    ></app-select>
+    <div class="pdf-container" #pdfContainer *ngIf="fileToShow">
+      <div
+        *ngIf="signUbication"
+        class="signQR"
+        [ngStyle]="{
+          top: signUbication.y - signUbication.height + 'px',
+          left: signUbication.x + 'px',
+          width: signUbication.width + 'px',
+          height: signUbication.height + 'px',
+        }"
+      ></div>
+      <pdf-viewer
+        [src]="fileToShow"
+        [show-all]="true"
+        [original-size]="false"
+        [render-text]="true"
+        [(page)]="actualPDFPage"
+        [style.height]="heightPage"
+        style="width: 100%"
+        (click)="onPdfClick($event)"
+        [autoresize]="false"
+        id="pdfViewerContainerData"
+      ></pdf-viewer>
+    </div>
+    <app-button label="Enviar datos" (click)="sendData()"> </app-button>
+  </div>
+  <div class="dialog-content" *ngIf="isSigning">
+    <div class="overlay">
+      <div class="containerOverlay">
+        <mat-spinner diameter="100"></mat-spinner>
+        <p>Firmando el documento</p>
+      </div>
+    </div>
+  </div>
+  <div class="custom-dialog-actions">
+    <button class="custom-close-button" (click)="closeDialogFromInside()">
+      <mat-icon svgIcon="close"></mat-icon>
+    </button>
+  </div>
+</div>

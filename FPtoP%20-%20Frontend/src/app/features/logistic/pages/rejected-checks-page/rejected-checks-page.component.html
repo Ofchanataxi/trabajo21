@@ -1,0 +1,75 @@
+<div class="content">
+  <div class="container-rejected">
+    <div class="row filter-information">
+      <div class="column column-1">
+        <div class="search">
+          <slb-search
+            [searchPlaceholder]="'Buscar en pendientes'"
+            [showAutocomplete]="true"
+            [searchItems]="searchingItems"
+            (change)="onSearchChange($event)"
+            (searching)="onSearch($event)"
+            (cleared)="onSearchClear($event)"
+          ></slb-search>
+        </div>
+      </div>
+      <div class="column column-2">
+        <div class="calendar-picker">
+          <slb-date-picker-range
+            class="calendar"
+            [placeholder]="'Seleccionar una fecha'"
+            [disableTextInput]="true"
+            [closeCalendarOnRangeSelected]="true"
+            [calendarStartAt]="actualCalendarDate"
+            [minValue]="minCalendarDate"
+            [maxValue]="maxCalendarDate"
+            (rangeSelected)="onDateSelected($event)"
+            [dateControl]="dateRange"
+            #datepicker
+          ></slb-date-picker-range>
+        </div>
+        <div class="clear-date">
+          <button
+            slb-button
+            [title]="'Limpiar calendario'"
+            (click)="onClearDate()"
+          >
+            <mat-icon class="clear-button" svgIcon="clear"></mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row rejected-information">
+      <div #noDataLabel style="display: none; text-align: center; width: 100%">
+        <p>No existe información de momento</p>
+      </div>
+      <div
+        #errorDataLabel
+        style="display: none; text-align: center; width: 100%"
+      >
+        <p>Hubo un error al obtener los datos, intenta de nuevo</p>
+      </div>
+      <div
+        *ngFor="let rejected of rejectedInformationFiltered"
+        class="card-iterator"
+      >
+        <div class="card-item">
+          <!-- <shared-oil-field-operation-dynamic-card
+            [data]="{
+                type: cardType,
+                title: rejected.viewText,
+                madeBy: rejected.madeBy,
+                updateBy: rejected.updateBy,
+                sendDate: rejected.dateSent.toString(),
+                businessLine: rejected.businessLine,
+                segmentId: segmentId,
+              redirectionValue: rejected.value,
+
+              }"
+          >
+          </shared-oil-field-operation-dynamic-card> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
