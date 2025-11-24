@@ -1,0 +1,5 @@
+@import '@slb-dls/angular-material/assets/styles/theming/dls-palette';
+@import "../base/base-theme";
+@import "./variables";
+
+@include theme-base($dls-app-dark-theme, $app-theme-config);

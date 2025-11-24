@@ -1,0 +1,10 @@
+@import "@angular/material/theming";
+
+@import "../../app/theme-switcher/theme-switcher.theme";
+
+// Creates theme for app components
+// @param $theme - material theme
+// @param $config - app specific config
+@mixin theme-base($theme, $config) {
+    @include theme-switcher($theme, $config);
+}

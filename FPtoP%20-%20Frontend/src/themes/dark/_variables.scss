@@ -1,0 +1,9 @@
+@import "@slb-dls/angular-material/assets/styles/theming/dls-typography";
+@import "@slb-dls/angular-material/assets/styles/theming/variables/dls-dark-theme";
+
+$app-dark-base: (
+    /*put your vars here*/
+);
+
+//merge all maps into common config
+$app-theme-config: map-merge(map-merge($app-dark-base, $dls-dark-base), $dls-typography);
