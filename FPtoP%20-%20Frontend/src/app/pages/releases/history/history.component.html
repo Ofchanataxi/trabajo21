@@ -1,0 +1,39 @@
+<div class="container-releaseHistoryData">
+  <div *ngFor="let item of releaseHistoryData" class="row-releaseHistoryData">
+    <div class="bullet-container">
+      <div class="bolt-timeline-icon-prefix"></div>
+      <p></p>
+    </div>
+
+    <div class="data-container">
+      <div class="row">
+        <p *ngIf="item.isForward === true" class="good">
+          <mat-icon>check_circle</mat-icon>
+        </p>
+        <p *ngIf="item.isForward !== true" class="cancel">
+          <mat-icon>cancel</mat-icon>
+        </p>
+        <p>{{ item.name }} | {{ item.firstName }} {{ item.lastName }} ({{ item.email }})</p>
+      </div>
+      <div class="row">
+        <p class="state">
+          {{ item.etapaInicio === null ? 'Inicio del proceso' : item.etapaInicio }}
+          <mat-icon>trending_flat</mat-icon> {{ item.etapaFin }}
+        </p>
+      </div>
+      <div class="row comentario">
+        <p><strong>Comentario:</strong> 
+          {{ item.changeReason && item.changeReason.trim() !== '' ? item.changeReason : 'Sin comentarios registrados' }}
+        </p>
+      </div>
+
+    </div>
+
+    <div class="date-container">
+      <p class="time"><mat-icon>schedule</mat-icon></p>
+      <p>
+        {{ dateCustomFormatPipe.transform(item.changeTimestamp) }}
+      </p>
+    </div>
+  </div>
+</div>

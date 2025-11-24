@@ -1,0 +1,130 @@
+<app-custom-shaya-header
+  [headerTitle]="
+    'No logramos transformar la siguente información, creala manualmente'
+  "
+  [isErrorHeader]="true"
+></app-custom-shaya-header>
+  <div class="container-information-description">
+    <shared-error-processing-well-information-template
+      [errorList]="errorList"
+      >
+    </shared-error-processing-well-information-template>
+    <div class="add-element">
+      <mat-card class="element-card">
+        <mat-card-content>
+          <div class="element-description element">
+            <div class="header">
+              <div class="icons">
+                <mat-icon svgIcon="flow-chart"></mat-icon>
+              </div>
+                <p>Descripción del elemento</p>
+              </div>
+              <div class="dropdown-section">
+                <error-processing-dropdown-elements
+                  [errorItems]="errorItems"
+                  (selectionChange)="onElementSelected($event)">
+                </error-processing-dropdown-elements>
+              </div>
+              <div class="dropdown-section-remaining">
+                <shared-error-processing-dropdown-attribute
+                *ngIf="selectedElementValue || selectedAttributesKeys === []"
+                [attributePartsError]="attributePartsError"
+                [fixedElements]="fixedElements"
+                [fixedElements]="fixedItems"
+                [initialAttributes]="initialAttributes"
+                [remainingAttributes]="remainingAttributes"
+                [attributeOptions]="attributeOptions"
+                [valueCondition]="valueCondition"
+                [selectedElementValue]="selectedElementValue"
+                (areFieldsComplete)="onFieldsComplete($event)"
+                (attributesTextChange)="onAttributesTextChange($event)"
+                (textElementChange)="onTextElementChange($event)">
+              </shared-error-processing-dropdown-attribute>
+              </div>
+            <div class="previewText">
+              <p>
+                {{ textCondition }} {{ attributesText }}
+              </p>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions class="card-actions">
+          <app-button
+            *ngIf="areFieldsComplete === true && selectedElementValue.value"
+            (click)="addSelectedElement()"
+            label="Agregar elemento"
+          ></app-button>
+
+          <div
+            class="button-add-element-data-base"
+            *ngIf="selectedElementValue && !selectedElementValue.value"
+            >
+            <label>Nombre para agregar a la base de datos</label>
+            <input
+              class="input-element-name"
+              type="text"
+              [(ngModel)]="inputElementName"
+              placeholder="Nombre del nuevo elemento"
+            />
+            <app-button
+              *ngIf="inputElementName !== ''"
+              (click)="addDataBase()"
+              label="Agregar a la base de datos"
+            ></app-button>
+          </div>
+
+          <div             
+            *ngIf="selectedElementValue && areFieldsComplete === false && selectedElementValue.value">
+              <app-button
+              (click)="addElementNoAttribute()"
+              label="Editar en el excel"
+          ></app-button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+      <br>
+      <mat-card class="element-card-extension"
+      *ngIf="selectedElementValue && selectedElementValue.value"
+      >
+        <mat-card-content>
+          <div class="header">
+            <div class="icons">
+              <mat-icon svgIcon="new-doc"></mat-icon>
+            </div>
+              <p>Extensión de documentos</p>
+          </div>
+          <mat-card-actions>
+            <shared-error-processing-new-extension-documents
+              [selectedElementValue] = "selectedElementValue"
+              [valueCondition]="valueCondition"
+            >
+            </shared-error-processing-new-extension-documents>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+<app-custom-shaya-header
+  [headerTitle]="'Items creados manualmente'"
+></app-custom-shaya-header>
+<div class="insert-information-description">
+  <div class="description descriptions"><p>DESCRIPCIÓN <br> ELEMENTOS AGREGADOS </p></div>
+  <div class="incorrect-body descriptions" *ngFor="let item of fixedItems">
+    <hr class="divided-documents" />
+    <div class="incorrect-item">
+
+      <!--       <p>GATE VALVE 3-1/8 5000 PSI FLANGE PSL2. PR2. MATERIAL EE</p>
+      -->     
+      {{ item.viewText | json }}
+ 
+    </div>
+    <hr class="divided-documents" />
+  </div>
+  <div class="returnProcess">
+    <app-button
+      (click)="returnToProcessData()"
+      label="Volver a ingresar la información en LOTE"
+    ></app-button>
+  </div>
+</div>

@@ -1,0 +1,177 @@
+<div [hidden]="!isProcessingData">
+  <app-custom-shaya-header [headerTitle]="'Informacion de carga'"></app-custom-shaya-header>
+  <div class="container column-description">
+    <div class="column description">
+      <p>
+        {{ loadFilesInformation.instructionsText }}
+      </p>
+    </div>
+    <div class="column excel-upload">
+      <div>
+        <div *ngFor="let file of loadFilesInformation.fileToTransform">
+          <div *ngIf="file; else undefinedFile">
+            <div *ngIf="file.extension === 'application/pdf'; else undefinedFileExtension">
+              <!-- TODO: Falta agregar el idStandardFileTypesOfRelease -->
+              <app-button-upload
+                [label]="file.file + ' (' + file.extensionToShow + ')'"
+                [extension]="file.extension"
+                [showIsRequired]="file.required"
+                [initialFiles]="initialFileToTransform"
+                [callbackAfterSave]="callback"
+                [callbackAfterDelete]="callbackAfterDelete"
+                [urlToDelete]="urlToDelete"
+                [urlToSave]="urlToSave"
+                [paramsToSave]="{
+                  idRelease: idRelease,
+                  idStandardFileTypesOfRelease: file.id,
+                }"
+              >
+              </app-button-upload>
+            </div>
+            <ng-template #undefinedFileExtension>
+              <app-button-upload
+                [label]="file.file + ' (' + file.extensionToShow + ')'"
+                [extension]="file.extension"
+                [showIsRequired]="file.required"
+                [initialFiles]="initialFileToTransform"
+                [callbackAfterSave]="callback"
+                [callbackAfterDelete]="callbackAfterDelete"
+                [urlToDelete]="urlToDelete"
+                [urlToSave]="urlToSave"
+                [paramsToSave]="{
+                  idRelease: idRelease,
+                  idStandardFileTypesOfRelease: file.id,
+                }"
+              >
+              </app-button-upload>
+            </ng-template>
+          </div>
+
+          <ng-template #undefinedFile> No hay nada que subir </ng-template>
+        </div>
+        <div
+          class="containerOptionsSheet"
+          *ngIf="
+            sheetsName?.length > 0 &&
+            loadFilesInformation.id !== 2 &&
+            loadFilesInformation.idTypeOfRelease !== 2
+          "
+        >
+          <!-- <div class="containerOptionsSheet"> -->
+          <slb-dropdown
+            [options]="sheetsName"
+            [label]="'Selecciona el nombre de la pestaña'"
+            (selectionChange)="selectionSheetChange($event)"
+            [placeholder]="'Nombre de la pestaña'"
+          ></slb-dropdown>
+          <app-button (click)="sendDataToTransform()" label="Obtener información del documento">
+          </app-button>
+        </div>
+      </div>
+      <h3 class="secondaryTitle" *ngIf="loadFilesInformation.availableFiles.length > 0">
+        Documentos adicionales del despacho
+      </h3>
+      <div *ngFor="let availableFile of loadFilesInformation.availableFiles">
+        <app-button-upload
+          [label]="availableFile.file + ' (' + availableFile.extensionToShow + ')'"
+          [extension]="availableFile.extension"
+          [showIsRequired]="availableFile.required"
+          [urlToDelete]="urlToDelete"
+          [initialFiles]="initialAvailableFiles"
+          [urlToSave]="urlToSave"
+          [paramsToSave]="{
+            idRelease: idRelease,
+            idStandardFileTypesOfRelease: availableFile.id,
+          }"
+        >
+        </app-button-upload>
+      </div>
+      <div
+        *ngIf="
+          (loadFilesInformation.id !== 1 || loadFilesInformation.idTypeOfRelease === 2) &&
+          showITPInput === true
+        "
+      >
+        <h3 class="secondaryTitle">Documentos de la liberación</h3>
+        <form
+          [formGroup]="formulario"
+          (ngSubmit)="onSubmit()"
+          class="slb-demo-form"
+          *ngIf="loadFilesInformation.id !== 2 && loadFilesInformation.idTypeOfRelease !== 2"
+        >
+          <app-select
+            [formControl]="conditionIDControl"
+            [placeholder]="''"
+            [label]="'¿Cuál es la condición de los elementos?'"
+            [showLabel]="true"
+            [options]="conditions"
+            (selectionChange)="selectionChangeEvent($event)"
+          ></app-select>
+        </form>
+        <h3 class="secondaryTitle" *ngIf="itp.length === 0">
+          Aún no se han definido los ITPs necesarios para esta condición, contáctate con soporte
+        </h3>
+        <div *ngFor="let availableFile of itp">
+          <app-button-upload
+            [label]="availableFile.file + ' (' + availableFile.extensionToShow + ')'"
+            [extension]="availableFile.extension"
+            [showIsRequired]="availableFile.required"
+            [urlToDelete]="urlToDelete"
+            [initialFiles]="initialAvailableFiles"
+            [urlToSave]="urlToSave"
+            [paramsToSave]="{
+              idRelease: idRelease,
+              idStandardFileTypesOfRelease: availableFile.id,
+            }"
+            (fileListchange)="updateInitialFile($event)"
+          >
+          </app-button-upload>
+        </div>
+        <div class="containerOptionsSheet">
+          <app-button
+            (click)="sendITPToExtractData()"
+            label="Obtener información del documento"
+            *ngIf="this.dataToTransform?.file || this.reloadedFileObject"
+          >
+          </app-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-custom-shaya-header [headerTitle]="'Ingreso de información en LOTE'">
+    <app-button
+      *ngIf="loadFilesInformation.template"
+      [isPrimary]="false"
+      (click)="downloadTemplate()"
+      label="Descargar plantilla de Tally Sheet"
+      matStepperNext
+    >
+    </app-button>
+    <!-- Alternativa a Transformar informacion, debido a que esta enlazado a master.
+      -->
+    <app-button (click)="sendRowData()" label="Transformar información"> </app-button>
+  </app-custom-shaya-header>
+  <shared-well-table-information
+    (updateRowDataEvent)="updateRowData($event)"
+    [rowData]="rowDataTable"
+    [rowDataFromTable]="rowDataFromTable"
+    [fields]="loadFilesInformation.fieldsTable"
+    [testDataList]="loadFilesInformation.testDataList"
+    [standardConditions]="standardConditions"
+    #wellTable
+  ></shared-well-table-information>
+</div>
+
+<div *ngIf="!isProcessingData">
+  <app-error-processing-well-information
+    [errorItems]="errorItems"
+    [errorList]="errorList"
+    (errorListChange)="onErrorListChange($event)"
+    [idBusinessLineArray]="idBusinessLineArray"
+    [elementsArray]="elementsArray"
+    (goBackEvent)="fromErrorToInfo($event)"
+    (updateDataEvent)="sendRowData()"
+    (errorDataRevision)="validateProcessingData()"
+  ></app-error-processing-well-information>
+</div>

@@ -1,0 +1,70 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header class="custom-expansion-header">
+    <mat-panel-title>
+      Retenidos en pozo
+    </mat-panel-title>
+    <mat-panel-description>
+      Visualización de documentos que se quedaron en pozo    
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <br>
+  <div class="button-container" *ngIf="hasFilesInFirstSubFolderDetained()">
+    <shared-button-download-zip
+      [folder]="detainedFolder.subFolders[0]"
+      label="Descargar todas las carpetas en .zip"
+      [documentsElement]="detainedFolder.subFolders[0]"
+    ></shared-button-download-zip>
+  </div>
+
+  <div *ngIf="!hasFilesInFirstSubFolderDetained()" class="no-documents-message">
+    <p>📂 Sin Documentos</p>
+  </div>
+
+  <div *ngIf="hasFilesInFirstSubFolderDetained()" class="row approved-information">
+    <div *ngFor="let subFolder of detainedFolder.subFolders" class="card-iterator">
+      <mat-card class="card">
+        <div class="title-documents-download">
+          <p>
+            📂 {{ subFolder.name }} 
+            ({{ countDirectDocumentsAndFolders(subFolder).filesCount + countDirectDocumentsAndFolders(subFolder).foldersCount }})
+          </p>
+        </div>
+
+        <hr class="separator-line">              
+
+        <mat-card-content class="contentCard">
+          <!-- Subcarpetas -->
+          <div *ngFor="let file of subFolder.files" class="file-item">
+            <div class="subtitle">
+              📂 {{ file.fileName }}
+            </div>
+          </div>
+
+          <!-- Archivos -->
+          <div *ngFor="let file of subFolder.files" class="file-item">
+            <div class="subtitle">
+              📄 {{ file.fileName }} - {{ file.size / (1024 * 1024) | number:'1.2-2' }} mb
+            </div>
+          </div>
+        </mat-card-content>
+
+        <hr>       
+
+        <mat-card-actions class="card-actions">
+          <div class="buttons-action">
+            <shared-button-download-zip
+              [folder]="subFolder"
+              label="DESCARGAR"
+              [documentsElement]="subFolder"
+            ></shared-button-download-zip>
+
+            <button class="open-file-button" (click)="toggleOpenFile(subFolder)">
+              ABRIR CARPETA
+            </button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</mat-expansion-panel>
+<br>

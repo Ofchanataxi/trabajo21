@@ -1,0 +1,72 @@
+<div class="content">
+  <div class="stepper-container">
+    <mat-stepper
+      [linear]="true"
+      [color]="'warn'"
+      [orientation]="'horizontal'"
+      [disableRipple]="false"
+      role="tablist"
+      (selectionChange)="selectionChange($event)"
+      #stepper
+    >
+      <ng-template
+        matStepperIcon="number"
+        let-active="active"
+        let-index="index"
+      >
+        <mat-icon *ngIf="active" svgIcon="edit-2"></mat-icon>
+        <mat-icon *ngIf="!active">{{ index + 1 }}</mat-icon>
+      </ng-template>
+
+      <ng-template matStepperIcon="edit">
+        <mat-icon svgIcon="check"></mat-icon>
+      </ng-template>
+
+      <ng-template matStepperIcon="done">
+        <mat-icon svgIcon="check"></mat-icon>
+      </ng-template>
+
+      <mat-step
+        label="Revisar Información"
+        arial-label="Revisar Información"
+        aria-selected="true"
+        role="tab"
+        [completed]="completedSteps[0]"
+      >
+        <shared-upload-data-summary-component
+          [loadFilesInformation]="loadFilesInformation"
+          #summaryComponent
+        ></shared-upload-data-summary-component>
+
+        <div class="container onAccept">
+          <div class="column">
+            <app-button (click)="onPressButton()" label="Aceptar"></app-button>
+            <app-button (click)="onPressReject()" label="Rechazar"></app-button>
+            <app-load-reject-dialog
+              [wellRejectInformation]="pendingInformation"
+            ></app-load-reject-dialog>
+          </div>
+        </div>
+
+        <!-- <app-check-information
+          *ngIf="isFetchData"
+          (completedStepsEvent)="receiveCompletedSteps($event)"
+          (sendDataToNextStep)="stepperNext($event)"
+          [pendingInformation]="pendingInformation"
+        ></app-check-information> -->
+      </mat-step>
+
+      <mat-step
+        label="Agregar archivo firmado"
+        arial-label="Agregar archivo firmado"
+        aria-selected="true"
+        role="tab"
+        [completed]="completedSteps[1]"
+      >
+        <app-add-sign-files
+          [pendingInformation]="pendingInformation"
+        ></app-add-sign-files>
+      </mat-step>
+    </mat-stepper>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<items-of-release
+  [idReleaseState]="2"
+  [idBusinessLine]="
+    user.idBusinessLine === 7 || user.idBusinessLine === 5 ? null : user.idBusinessLine
+  "
+  [itemsSteps]="[
+    {
+      icon: 'check_circle',
+      text: 'Aprobado por el segmento',
+      correct: true,
+    },
+    { icon: 'block', text: 'Aprobado por QAQC', correct: false },
+    { icon: 'block', text: 'Aprobado por PEC', correct: false },
+    { icon: 'block', text: 'Enviado a Campo', correct: false },
+  ]"
+  [title]="'Aprobados por el segmento - En revisión QAQC'"
+  [urlRedirect]="urlRedirect"
+/>

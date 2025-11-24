@@ -1,0 +1,60 @@
+@import "src/themes/base/base-theme";
+@import "@slb-dls/angular-material/assets/styles/theming/dls-palette";
+@import "src/themes/light/variables";
+
+@include theme-base($dls-app-light-theme, $app-theme-config);
+/* Core Grid CSS */
+@import "ag-grid-community/styles/ag-grid.css";
+@import "ag-grid-community/styles/ag-theme-quartz.css";
+
+.content {
+  margin-bottom: 30px;
+  .container-rejected {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 40px 0 40px;
+
+    .row {
+      display: flex;
+    }
+
+    .column {
+      padding: 10px;
+      box-sizing: border-box;
+      text-align: center;
+      flex: 1;
+    }
+
+    .column-1 {
+      flex: 0 0 60%;
+    }
+
+    .column-2 {
+      flex: 0 0 30%;
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      gap: 8px;
+      //   align-content: center;
+
+      .clear-date {
+        padding-top: 16px;
+        button {
+          background-color: rgba(204, 207, 222, 0.75);
+          color: rgba(31, 31, 32, 0.75);
+          font-weight: 800;
+          border-radius: 8px;
+          font-size: 16px;
+        }
+      }
+    }
+
+    .rejected-information {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      max-width: 100%;
+    }
+  }
+}

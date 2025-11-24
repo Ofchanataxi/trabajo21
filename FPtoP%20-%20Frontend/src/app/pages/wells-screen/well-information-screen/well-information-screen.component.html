@@ -1,0 +1,127 @@
+<div class="content">
+  <div class="containerTitle">
+    <p>{{ nameWell }}</p>
+    <p class="subtitulo" *ngIf="loadFilesInformation.id !== 1; else releaseType">
+      ID del despacho: {{ releaseId }}
+    </p>
+    <ng-template #releaseType>
+      <p class="subtitulo">ID de liberación: {{ releaseId }}</p></ng-template
+    >
+  </div>
+  <div class="stepper-container">
+    <!--TODO: Activar el modo linear obligatorio-->
+    <!--TODO: validar la posicion del stepper en base a los archivos del paso uno [selectedIndex] = 0, para que pase directamente al paso dos del stepper -->
+    <div>
+      <app-custom-shaya-header [headerTitle]="'Historial de revisión'"></app-custom-shaya-header>
+      <history-release />
+    </div>
+    <mat-stepper
+      [linear]="false"
+      [color]="'warn'"
+      [orientation]="'horizontal'"
+      [disableRipple]="false"
+      role="tablist"
+      (selectionChange)="selectionChange($event)"
+      [selectedIndex]="step"
+      #stepper
+    >
+      <ng-template matStepperIcon="number" let-active="active" let-index="index">
+        <mat-icon *ngIf="active" svgIcon="edit-2"></mat-icon>
+        <mat-icon *ngIf="!active">{{ index + 1 }}</mat-icon>
+      </ng-template>
+
+      <ng-template matStepperIcon="edit">
+        <mat-icon svgIcon="check"></mat-icon>
+      </ng-template>
+
+      <ng-template matStepperIcon="done">
+        <mat-icon svgIcon="check"></mat-icon>
+      </ng-template>
+      <mat-step 
+        *ngIf="numberOfReleasesOfUserBusinessLine > 1 && !hasDocuments"
+        label="Tipo de Liberación"
+        aria-label="Tipo de Liberación"
+        role="tab"
+      >
+        <app-release-type-selector
+          [options]="availableOptionsOfReleases"
+          (idTypeOfReleaseSelected)="onReleaseTypeSelected($event)"
+        ></app-release-type-selector>
+      </mat-step>
+
+      <!-- Paso 1, ingresos de lote, debe atrapar la informacion de la tabla y enviarlo al 2do paso -->
+      <mat-step
+        *ngIf="!hasDocuments"
+        label="Ingresos en lote"
+        arial-label="Ingresos en lote"
+        aria-selected="true"
+        role="tab"
+        [completed]="completedSteps[0]"
+      >
+        <div>
+          <shared-add-well-information-screen
+            [stepper]="stepper"
+            [completedSteps]="completedSteps"
+            [loadFilesInformation]="loadFilesInformation"
+            (completedStepsEvent)="receiveCompletedSteps($event)"
+            (sendDataToNextStep)="stepperNext($event)"
+            (sendTallySheetFile)="getAvailableDocuments($event)"
+            [idRelease]="releaseId"
+            [callback]="this.loadFilesInformation.callback"
+            [callbackAfterDelete]="this.loadFilesInformation.callbackAfterDelete"
+            [sheetsName]="sheetsName"
+            [dataToTransform]="dataToTransform"
+            [sheetSelected]="sheetSelected"
+            (sheetSelectedChangeEvent)="onSheetSelectedChange($event)"
+            (rowDataFromTableEvent)="getRowDataFromTable($event)"
+            [initialFiles]="initialFilesForChild"
+            [reloadedFileObject]="reloadedFileObject"
+          ></shared-add-well-information-screen>
+        </div>
+      </mat-step>
+      <!-- Paso 2: de los datos de la tabla (RowDataFromTable) se le asigna a la base RowData que se transfiere al hijo -->
+      <mat-step
+        label="Documentos de soporte"
+        arial-label="Documentos de soporte"
+        aria-selected="true"
+        role="tab"
+        [completed]="completedSteps[1]"
+      >
+        <app-upload-well-support-documents
+          [completedSteps]="completedSteps"
+          [userPipeSelected]="userPipeSelected"
+          [summaryComponent]="summaryComponent"
+          [rowData]="rowData"
+          (completedStepsEvent)="receiveCompletedSteps($event)"
+          (sendDataToNextStep)="stepperNext($event)"
+          (hasDocumentsEvent)="receiveHasDocumentsEvent($event)"
+          (rowDataChange)="onRowDataChange($event)"
+        ></app-upload-well-support-documents>
+      </mat-step>
+
+      <mat-step
+        label="Resumen"
+        arial-label="Resumen"
+        aria-selected="true"
+        role="tab"
+        [completed]="completedSteps[2]"
+      >
+        <shared-upload-data-summary-component
+          [availableDocuments]="availableDocuments"
+          [userPipeSelected]="userPipeSelected"
+          [rowData]="rowData"
+          [loadFilesInformation]="loadFilesInformation"
+          #summaryComponent
+        ></shared-upload-data-summary-component>
+        <div class="container onSummarButton">
+          <div class="column">
+            <app-button
+              (click)="onSendData()"
+              label="{{ user.idBusinessLine === 1 ? 'Pasar a Campo' : 'Pasar a revisión de QAQC' }}"
+            ></app-button>
+          </div>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </div>
+</div>

@@ -1,0 +1,139 @@
+.onAccept {
+  .column {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    gap: 20px;
+    app-button {
+      button {
+        border-radius: 40px !important;
+      }
+    }
+  }
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px 2%;
+  .column {
+    flex: 1 1 30%; /* Crecer, decrecer, tamaño base del 30% del contenedor */
+    margin: 10px; /* Espaciado entre columnas */
+    box-sizing: border-box;
+    &.description {
+      text-align: justify;
+    }
+    p {
+      margin: 0px;
+    }
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    .column {
+      flex: 1 1 100%; /* Ocupa el 100% en pantallas más pequeñas */
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+.supported-documents {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.support-documents-header {
+  padding: 0;
+  border-bottom: 1px solid gray;
+  hr {
+    border: none;
+    border-top: 1px solid #292626;
+    margin: 20px 0;
+  }
+  .column {
+    text-align: center;
+  }
+
+  .title-column-1 {
+    flex: 0 0 45%;
+    margin: 10px 0 0 0;
+  }
+
+  .title-column-2 {
+    flex: 0 0 10% !important;
+    margin: 10px 0 0 0;
+  }
+
+  .title-column-3 {
+    flex: 0 0 45%;
+    margin: 10px 0 0 0;
+  }
+}
+
+.support-documents-container {
+  display: flex;
+  flex-direction: column;
+
+  .check-documents-row {
+    display: flex;
+    position: relative;
+    border-bottom: 1px solid gray;
+  }
+
+  .column-50 {
+    flex: 0 0 45%;
+    display: flex;
+    align-items: baseline !important;
+  }
+
+  .column-20 {
+    flex: 0 0 10%;
+  }
+
+  .column-30 {
+    flex: 0 1 45%;
+  }
+
+  .check-documents-column {
+    padding: 10px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    text-align: center;
+    border-right: 1px solid gray;
+    display: flex;
+    flex-direction: column;
+    .divided-documents {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+  }
+}
+
+.check-files-summary {
+  border-bottom: 1px solid gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 0 10px 0;
+
+  .documents-iterator {
+    display: flex;
+    justify-content: center;
+    .availableFiles {
+      max-width: 600px;
+      flex: 1;
+    }
+  }
+}
