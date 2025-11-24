@@ -1,0 +1,27 @@
+@import "src/themes/base/base-theme";
+@import "@slb-dls/angular-material/assets/styles/theming/dls-palette";
+@import "src/themes/light/variables";
+
+@include theme-base($dls-app-light-theme, $app-theme-config);
+
+
+.close-button {
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  background-color: #a33a36; 
+  color: white; 
+  border: none;
+  border-radius: 50%; 
+  width: 40px; 
+  height: 40px; 
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-button:hover {
+color: #ff0000;
+}

@@ -1,0 +1,27 @@
+<!-- Main button with dynamic class -->
+<button
+  *ngIf="!isError"
+  slb-button
+  type="button"
+  size="{{ size }}"
+  [ngClass]="getButtonClass()" 
+  [ngStyle]="{
+    '--dynamic-background-color': getBackgroundColor(),
+    '--dynamic-color': getTextColor()
+  }"
+  [disabled]="disable"
+>
+  <ng-content></ng-content>
+  {{ label }}
+</button>
+
+<!-- Error button -->
+<button
+  *ngIf="isError"
+  type="button"
+  class="button error"
+  [ngStyle]="errorStylesAttr"
+>
+  <ng-content></ng-content>
+  {{ label }}
+</button>

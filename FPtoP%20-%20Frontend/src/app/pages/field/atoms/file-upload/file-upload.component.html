@@ -1,0 +1,9 @@
+<div>
+    <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;" />
+  
+    <app-button 
+      [label]="label" 
+      (click)="triggerFileInput()">
+    </app-button>
+  </div>
+  
