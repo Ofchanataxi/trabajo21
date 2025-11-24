@@ -1,0 +1,37 @@
+<mat-stepper
+  [linear]="false"
+  color="warn"
+  orientation="horizontal"
+  [disableRipple]="false"
+  role="tablist"
+  #stepper
+  (selectionChange)="onStepChange($event.selectedIndex)"
+>
+  <ng-template
+    matStepperIcon="number"
+    let-active="active"
+    let-index="index"
+  >
+    <mat-icon *ngIf="active" svgIcon="edit-2"></mat-icon>
+    <mat-icon *ngIf="!active">{{ index + 1 }}</mat-icon>
+  </ng-template>
+
+  <ng-template matStepperIcon="edit">
+    <mat-icon svgIcon="check"></mat-icon>
+  </ng-template>
+
+  <ng-template matStepperIcon="done">
+    <mat-icon svgIcon="check"></mat-icon>
+  </ng-template>
+
+  <ng-container *ngFor="let step of steps; let i = index">
+    <mat-step
+      [label]="step.label"
+      [aria-label]="step.ariaLabel"
+      aria-selected="true"
+      role="tab"
+      [completed]="completedSteps[i]"
+    >
+    </mat-step>
+  </ng-container>
+</mat-stepper>
