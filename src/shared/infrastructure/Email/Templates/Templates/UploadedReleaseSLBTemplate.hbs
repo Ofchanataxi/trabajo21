@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+                @font-face {
+            font-family: 'SLBSans';
+            src: url('./assets/fonts/SLBSans-Regular.otf');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: 'SLBSans', 'Open Sans';
+            background-color: #f4f4f4;
+            font-weight: 200;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #dddddd;
+
+        }
+        .header {
+            background-color: #0014dc; /* Color corporativo de SLB */
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .content {
+            padding: 20px;
+        }
+        .footer {
+            background-color: #0014dc; /* Color corporativo de SLB */
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 12px;
+        }
+        .text {
+            flex: 1; /* Toma el espacio disponible */
+        }
+
+        .image img {
+            max-width: 100%; /* Asegura que la imagen no se desborde */
+            height: auto;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #C8CDCD; /* Otro color corporativo */
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        p {
+            margin-bottom: 20px;
+            size: 12px !important;
+        }
+        h1{
+            margin: 10px;
+            top: 0%;
+        }
+        h2 {
+            size: 26pt;
+            color: #0014dc;
+        }
+        h1, h3, h4, h5, h6 {
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>FP2P</h1>
+            <?xml version="1.0" encoding="UTF-8"?><svg id="Logos" width="200" height="200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1350 950"><defs><style>.cls-1{fill:#ffffff;}</style></defs><path class="cls-1" d="M647,635c-191.38-153.23-271.22-350-472-350v350h472Z"/><path class="cls-1" d="M1054.03,279.75c-39.08,0-74.02,17-94.28,41.96V175h-47.25v350h38.9l4.99-36.79c13.72,18.37,41.67,42.04,95.37,42.04,72.14,0,123.25-51.57,123.25-124.67s-49.04-125.83-120.97-125.83Zm-12.94,206.66c-52.04,0-83.11-30.98-83.11-81.34s31.83-81.34,83.11-81.34,83.11,30.98,83.11,81.34-31.83,81.34-83.11,81.34Z"/><rect class="cls-1" x="830.25" y="175" width="47.25" height="350"/><path class="cls-1" d="M696.69,489.45c-34.46,0-70.64-16.81-90.07-40.97l-31.87,30.33c31.08,35.22,71.73,51.44,119.9,51.44,66.11,0,107.6-29.45,107.6-79.11,0-103.23-179.33-38.67-179.33-96.85,0-21.29,24.83-33.35,63.5-33.35,34.46,0,59.34,11.17,74.81,27.14l31.87-30.33c-21.1-22.7-60.83-38-105.49-38-66.81,0-110.76,31.61-110.76,81.63,0,100.39,178.62,36.54,178.62,95.07,0,20.58-23.28,32.99-58.79,32.99Z"/><path class="cls-1" d="M1169.75,600h-510.75c105.43,86.03,267.31,175,510.75,175v-175Z"/>
+
+            </svg>
+        </div>
+        <div class="content">
+            <h2>Actualización de Información del Pozo</h2>
+            <br>
+            <p>La plataforma de FP2P complace informarles que <strong>{{user}}</strong> ha subido los elementos de tubería para el pozo <strong>{{nameWell}}</strong> el día <strong>{{updateDate}}</strong>.</p>
+            <p>Por favor, revisen los detalles y asegúrense de que todo esté en orden.</p>
+            <p>Para más información, pueden acceder al sistema de gestión de releases.</p>
+            <a href="{{url}}" class="button">Ver Detalles</a>
+            <hr>
+            <p>Saludos cordiales,</p>
+            <p>El equipo de FP2P de Shaya</p>
+        </div>
+        <div class="footer">
+            <p>Este correo electrónico es clasificado como privado y está destinado únicamente para uso interno.</p>
+        </div>
+    </div>
+</body>
+</html>
