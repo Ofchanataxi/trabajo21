@@ -1,0 +1,39 @@
+<!-- Para OilfieldOperation -->
+<app-button-upload
+  [label]="'Ingresa el documento del pozo actividad'"
+  [extension]="'application/pdf'"
+  [showIsRequired]="true"
+  [urlToDelete]="urlToDelete"
+  [urlToSave]="urlToSave"
+  [paramsToSave]="{
+    idOilfieldOperations: 78,
+    idStandardFileTypesOfOilfieldOperations: 2,
+  }"
+></app-button-upload>
+
+<!-- Para Element Release -->
+<!-- <app-button-upload
+  [label]="'Ingresa el documento de la liberación o despacho'"
+  [extension]="'application/pdf'"
+  [showIsRequired]="true"
+  [urlToDelete]="urlToDelete"
+  [urlToSave]="urlToSave"
+  [paramsToSave]="{
+    idElementRelease: 12767,
+    idStandardElementsRequiredFiles: 7,
+  }"
+></app-button-upload> -->
+
+<!-- Para Release -->
+<!-- <app-button-upload
+  [label]="'Ingresa el documento de la liberación o despacho'"
+  [extension]="'application/pdf'"
+  [showIsRequired]="true"
+  [urlToDelete]="urlToDelete"
+  [paramsToDelete]="{}"
+  [urlToSave]="urlToSave"
+  [paramsToSave]="{
+    idRelease: 8886,
+    idStandardFileTypesOfRelease: 2,
+  }"
+></app-button-upload> -->
