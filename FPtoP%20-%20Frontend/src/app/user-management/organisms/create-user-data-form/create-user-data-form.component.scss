@@ -1,0 +1,59 @@
+.slb-demo-form {
+  width: 100%;
+  .inputField {
+    width: 100%;
+  }
+  .mat-mdc-checkbox,
+  .mat-mdc-form-field {
+    margin-right: 12px;
+    width: 100%;
+  }
+
+  .dls-radio-group {
+    .dls-radio-group-wrapper {
+      padding-bottom: 16px;
+    }
+    .mat-mdc-radio-group .mat-mdc-radio-button {
+      margin: 0 12px 6px 0;
+      width: calc(50% - 12px);
+    }
+  }
+
+  .actions {
+    margin-top: 20px;
+    padding-top: 4px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    button {
+      margin-right: 8px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 8px;
+
+  &.no-wrap {
+    flex-wrap: nowrap;
+  }
+
+  .col {
+    width: 50%;
+  }
+
+  .dls-dropdown,
+  .mat-mdc-form-field {
+    width: 50%;
+  }
+
+  .dls-dropdown .mat-mdc-form-field {
+    width: 100%;
+  }
+}

@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+@mixin theme-switcher($theme, $config) {
+    $primary: map-get($theme, primary);
+
+    $color-input-background: map-get($config, "color-input-background");
+    $color-container-border: map-get($config, "color-container-border");
+    $composite-border-radius-container: map-get($config, "composite-border-radius-container");
+
+    .app-theme-switcher {
+        .app-content {
+            color: mat.get-color-from-palette($primary);
+            font: {
+                family: mat.font-family($config, body-1);
+                size: mat.font-size($config, body-1);
+                weight: mat.font-weight($config, body-1);
+            }
+        }
+    }
+
+}

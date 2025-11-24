@@ -1,0 +1,52 @@
+<form [formGroup]="formulario" (ngSubmit)="onSubmit()" class="slb-demo-form">
+  <section>
+    <h6>Información del usuario</h6>
+
+    <app-input
+      [formControl]="firstNameControl"
+      [placeholder]="'Ingresa tu primer nombre'"
+      [required]="true"
+      [showLabel]="true"
+      [readonly]="true"
+      [label]="'¿Cuál es tu primer nombre?'"
+    ></app-input>
+    <app-input
+      [formControl]="surNameControl"
+      [placeholder]="'Ingresa tu primer apellido'"
+      [required]="true"
+      [showLabel]="true"
+      [readonly]="true"
+      [label]="'¿Cuál es tu primer apellido?'"
+    ></app-input>
+
+    <app-input
+      [formControl]="emailControl"
+      [placeholder]="'Ingresa tu email'"
+      [required]="true"
+      [showLabel]="true"
+      [readonly]="true"
+      [label]="'¿Cuál es tu email?'"
+    ></app-input>
+
+    <app-input
+      [formControl]="microsoftIdControl"
+      [placeholder]="'Ingresa tu Microsoft ID'"
+      [required]="true"
+      [showLabel]="true"
+      [readonly]="true"
+      [label]="'¿Cuál es tu Microsoft ID?'"
+    ></app-input>
+
+    <app-select
+      [formControl]="businessLineIDControl"
+      [placeholder]="'Selecciona tu business line'"
+      [required]="true"
+      [showLabel]="true"
+      [label]="'¿Cuál es tu business line?'"
+      [options]="businessLines"
+    ></app-select>
+  </section>
+  <section class="actions">
+    <app-button [label]="'Crear usuario'" (click)="submitForm()"></app-button>
+  </section>
+</form>

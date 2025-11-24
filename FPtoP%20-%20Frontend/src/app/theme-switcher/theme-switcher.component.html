@@ -1,0 +1,38 @@
+<div 
+    slbPageHeader
+    [hideForImmersiveMode]="true"
+>
+    <slb-framework-page-header
+        slbFrameworkPageHeader
+        displayBackButton="true"
+        pageTitle="Theme switching"
+        [items]="secondaryLinks"
+    >
+        <button 
+            slb-icon-button 
+            type="button"
+            (click)="_onButtonClick()"
+        >
+            <mat-icon svgIcon="wave-plot"></mat-icon>
+        </button>
+        <button
+            slb-icon-button 
+            type="button"
+            (click)="_onButtonClick()"
+        >
+            <mat-icon svgIcon="layers"></mat-icon>
+        </button>
+        <button
+            slb-button
+            type="button"
+            (click)="_onButtonClick()"
+        >
+            switch theme
+        </button>
+    </slb-framework-page-header>
+</div>
+<div class="app-content">
+    <mat-slide-toggle color="primary" [(ngModel)]="isDarkTheme" (change)="_onThemeToggleChange()">
+        {{ isDarkTheme ? "Dark" : "Light" }}
+    </mat-slide-toggle>
+</div>
