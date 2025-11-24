@@ -1,0 +1,13 @@
+<mat-form-field appearance="outline" style="width: 100%;">
+  <mat-select
+    id="condition-dropdown"
+    [(value)]="selectedIdStandardWellSections"
+    hideSingleSelectionIndicator="true"
+    placeholder="Seleccione un Standard de Sección de Pozo"
+    (selectionChange)="conditionSelected($event.value)"
+  >
+    <mat-option *ngFor="let condition of idStandardWellSectionsList" [value]="condition.id">
+      {{ condition.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

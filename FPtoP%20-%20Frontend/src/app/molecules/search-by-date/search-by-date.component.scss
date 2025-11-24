@@ -1,0 +1,20 @@
+.date-picker-container{
+
+        flex: 0 0 30%;
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            gap: 8px;
+            
+.clear-date {
+        padding-top: 16px;
+
+        button {
+            background-color: rgba(204, 207, 222, 0.75);
+            color: rgba(31, 31, 32, 0.75);
+            font-weight: 800;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+    }
+}

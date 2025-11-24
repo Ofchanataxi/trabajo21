@@ -1,0 +1,21 @@
+<div class="infrastructure-type-container">
+
+  <mat-form-field appearance="outline" style="width: 100%;">
+    <mat-select
+      id="condition-dropdown"
+      [(value)]="selectedIdStandardWellInfrastructureTypeLines"
+      hideSingleSelectionIndicator="true"
+      placeholder="Seleccione un Standard de Tipo de Infraestructura de Pozo"
+      (selectionChange)="conditionSelected($event.value)"
+    >
+      <mat-option
+        *ngFor="let condition of idStandardWellInfrastructureTypeList"
+        [value]="condition.id"
+        [matTooltip]="condition.name"
+        matTooltipPosition="above"
+      >
+        {{ condition.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

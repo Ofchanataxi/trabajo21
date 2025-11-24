@@ -1,0 +1,8 @@
+<div class="search">
+  <slb-search
+    [searchPlaceholder]="'Ingrese el nombre, rig o el ID de la operación del pozo'"
+    [showAutocomplete]="true"
+    (change)="onSearchChange($event)"
+    (cleared)="onSearchClear($event)"
+  ></slb-search>
+</div>

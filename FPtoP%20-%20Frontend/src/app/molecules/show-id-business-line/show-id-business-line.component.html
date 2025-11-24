@@ -1,0 +1,14 @@
+<label for="search-input">Lineas de negocio:</label>
+<mat-form-field appearance="outline" style="width: 100%;">
+  <mat-select
+    id="condition-dropdown"
+    [(value)]="selectedIdStandardBusinessLines"
+    hideSingleSelectionIndicator="true"
+    placeholder="Seleccione una linea de negocio"
+    (selectionChange)="conditionSelected($event.value)"
+  >
+    <mat-option *ngFor="let condition of idStandardBusinessLinesList" [value]="condition.id">
+      {{ condition.name }} 
+    </mat-option>
+  </mat-select>
+</mat-form-field>

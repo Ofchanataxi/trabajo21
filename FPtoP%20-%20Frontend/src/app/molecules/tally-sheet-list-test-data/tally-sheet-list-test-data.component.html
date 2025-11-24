@@ -1,0 +1,4 @@
+<app-button *ngFor="let testDataItem of testDataList"
+[label]="testDataItem.label"
+(click)="addTestData(testDataItem.data)"
+></app-button>

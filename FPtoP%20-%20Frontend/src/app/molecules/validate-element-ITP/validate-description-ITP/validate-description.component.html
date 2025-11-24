@@ -1,0 +1,63 @@
+<div *ngIf="isLoading" class="loading-container">
+  <p>Validando descripción...</p>
+</div>
+
+<div *ngIf="!isLoading && validationAttempted">
+
+  <div *ngIf="!hasErrors && validatedElement">
+    <app-custom-shaya-header
+      [headerTitle]="'✅ Descripción válida'"
+    ></app-custom-shaya-header>
+  </div>
+
+  <div style="margin-top: 1.5rem;">
+    <app-custom-shaya-header
+      [headerTitle]="'Resultado del procesamiento:'"
+    ></app-custom-shaya-header>
+    <shared-error-processing-well-information-template
+      [errorList]="errorList"
+    ></shared-error-processing-well-information-template>
+  </div>
+
+  <div *ngIf="hasErrors">
+    <div *ngIf="matchedElementGroup; else showErrorOnly">
+      <app-custom-shaya-header
+        [headerTitle]="'⚠️ La descripción tiene errores.'"
+        [isErrorHeader]="true"
+      ></app-custom-shaya-header>
+      <app-element-attributes
+        [elementGroup]="matchedElementGroup"
+        [idStandardElement]="matchedElementGroup.id"
+        [idUser]="userId"
+        [idBusinessLineUser]="idBusinessLineUser"
+        (updateElements)="checkDescriptionAndFetchDetails()"
+        [disabledAll]="true"
+      ></app-element-attributes>
+    </div>
+    <ng-template #showErrorOnly>
+      <app-custom-shaya-header
+        [headerTitle]="'❌ No logramos transformar la información'"
+        [isErrorHeader]="true"
+      ></app-custom-shaya-header>
+    </ng-template>
+  </div>
+
+  <div *ngIf="elementForDocs" class="container-document" style="margin-top: 1rem;">
+    <mat-card class="element-card-extension">
+      <mat-card-content>
+        <div class="icons">
+          <mat-icon svgIcon="new-doc"></mat-icon>
+        </div>
+        <p>Extensión de documentos</p>
+        <mat-card-actions>
+          <shared-error-processing-new-extension-documents
+            [canShowExtensionDocuments]="false"
+            [selectedElementValue]="elementForDocs"
+            [idUser]="userId"
+            [idBusinessLineUser]="idBusinessLineUser"
+          ></shared-error-processing-new-extension-documents>
+        </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
