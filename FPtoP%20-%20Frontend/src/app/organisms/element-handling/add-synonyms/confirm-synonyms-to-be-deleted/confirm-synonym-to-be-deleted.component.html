@@ -1,0 +1,27 @@
+<div class="confirmation-container">
+    <h3>Confirmar Eliminación</h3>
+    <p>Se eliminará permanentemente el sinónimo <strong>"{{ synonym.synonym }}"</strong>.</p>
+    <p>¿Estás seguro de que deseas continuar?</p>
+  
+    <label class="checkbox">
+      <input type="checkbox" [(ngModel)]="isChecked" />
+      Acepto la eliminación de la información y soy consciente de que no se podrá recuperar.
+    </label>
+    <div *ngIf="!isChecked" class="markCheckboxAlert">* Debes aceptar para poder eliminar.</div>
+  
+    <div class="action-buttons">
+      <button
+        mat-button
+        (click)="onCancel()">
+        Cancelar
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        class="delete-button"
+        [disabled]="!isChecked"
+        (click)="deleteSynonym()">
+        Eliminar
+      </button>
+    </div>
+  </div>

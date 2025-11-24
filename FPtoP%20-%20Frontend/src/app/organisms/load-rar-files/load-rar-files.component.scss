@@ -1,0 +1,32 @@
+@import "src/themes/base/base-theme";
+@import "@slb-dls/angular-material/assets/styles/theming/dls-palette";
+@import "src/themes/light/variables";
+
+@include theme-base($dls-app-light-theme, $app-theme-config);
+
+app-button-rar-upload {
+  justify-content: center;
+  display: flex;
+}
+
+.custom-modalbox {
+  mat-dialog-container {
+    background: none;
+    background-color: rgba($color: map-get($colors, shayaBlue), $alpha: 0.95);
+    backdrop-filter: none;
+
+    .mdc-dialog__container {
+      .mat-mdc-dialog-surface {
+        overflow: auto;
+      }
+    }
+  }
+}
+
+.mdc-floating-label {
+  color: white;
+}
+
+.mdc-floating-label {
+  color: white;
+}

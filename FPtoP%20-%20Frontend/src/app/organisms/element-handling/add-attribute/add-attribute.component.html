@@ -1,0 +1,39 @@
+
+<p>Formulario de atributos</p>
+<form [formGroup]="attributeForm">
+  <label *ngIf="attributeForm.get('newAttributeName')?.valid || !attributeForm.get('newAttributeName')?.touched">Nombre del Atributo</label>
+  <mat-error *ngIf="attributeForm.get('newAttributeName')?.invalid && attributeForm.get('newAttributeName')?.touched">
+    El nombre del atributoes obligatorio
+  </mat-error>
+  <mat-form-field appearance="outline">
+    <input matInput placeholder="Nombre del Atributo" formControlName="newAttributeName" />
+  </mat-form-field>
+  <br>
+  <label *ngIf="attributeForm.get('newMeasurementUnit')?.valid || !attributeForm.get('newMeasurementUnit')?.touched">Unidad de medida</label>
+  <mat-error *ngIf="attributeForm.get('newMeasurementUnit')?.invalid && attributeForm.get('newMeasurementUnit')?.touched">
+    La unidad de medida es obligatoria
+  </mat-error>
+  <mat-form-field appearance="outline">
+    <input matInput placeholder="Unidad de medida" formControlName="newMeasurementUnit" />
+  </mat-form-field>
+  <div>
+    <label *ngIf="idStandardAttributeTypes">Tipo de atributo</label>
+    <mat-error *ngIf="!idStandardAttributeTypes">Debe seleccionar un standard de atributo</mat-error>
+    <show-standardAttributeTypes 
+      [preselectedTypeId]="idStandardAttributeTypes"
+      (idSelected)="getIdStandardAttributeTypes($event)">
+    </show-standardAttributeTypes>
+  </div>
+  <mat-checkbox formControlName="required">¿Es requerido?</mat-checkbox>
+  <mat-checkbox formControlName="alwaysShow">¿Mostrar siempre?</mat-checkbox>
+  <mat-checkbox formControlName="verified">¿Verificado?</mat-checkbox>
+  <mat-checkbox formControlName="useInGroupBy">¿Es usado por un grupo?</mat-checkbox>
+  <mat-checkbox formControlName="showRunBES">¿Mostrar Run BES?</mat-checkbox>
+  <div style="display: flex; justify-content: center; margin-top: 20px;">
+    <button mat-raised-button color="primary" 
+      (click)="onSubmit()"
+      [disabled]="attributeForm.invalid || !idStandardAttributeTypes"
+      >
+      {{ attributeToEdit ? 'Editar Atributo' : 'Añadir Atributo' }}</button>
+  </div>
+</form>

@@ -1,0 +1,26 @@
+.description {
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px 2%;
+}
+
+ ::ng-deep {
+  .ag-theme-dls {
+    .ag-cell {
+      border-right: 1px solid #dfe1e6;
+    }
+
+    .ag-cell-with-row-span {
+      vertical-align: top;
+      padding-top: 10px; // Ajusta el padding si es necesario
+    }
+
+    .ag-cell-focus {
+      outline: 2px solid #007bff !important;
+      outline-offset: -2px;
+    }
+  }
+}
+

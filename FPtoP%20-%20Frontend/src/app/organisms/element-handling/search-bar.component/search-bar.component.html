@@ -1,0 +1,16 @@
+<div class="search-bar">
+  <label for="search-input">Buscar Elementos:</label>
+  <div class="search-input-wrapper">
+    <input
+      id="search-input"
+      type="text"
+      [formControl]="searchControl"
+      placeholder="Ingrese el nombre"
+      class="search-input"
+      [disabled]="selectedGroup"
+    />
+    <button class="search-button" mat-icon-button (click)="onClick()">
+      <mat-icon>{{ selectedGroup ? 'refresh' : 'search' }}</mat-icon>
+    </button>
+  </div>
+</div>

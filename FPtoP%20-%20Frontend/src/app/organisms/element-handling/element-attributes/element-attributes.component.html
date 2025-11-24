@@ -1,0 +1,262 @@
+<br>
+<div *ngIf="showModal" class="modal">
+ <div class="modal__overlay" (click)="closeAddAttributes()"></div>
+ <div class="modal__content" (click)="$event.stopPropagation()">
+  <button class="button button--close" (click)="closeAddAttributes()">×</button>
+  <app-add-attribute-component
+   [idStandardElement]="idStandardElement"
+   [orderInDescription]="orderInDescription"
+   [attributeToEdit]="selectedAttribute"
+   (atributoAgregado)="reloadAttributeList()"
+  ></app-add-attribute-component>
+ </div>
+</div>
+
+<mat-card>
+ <div class="mat-card-items-header">
+  <h2 *ngIf="elementGroup?.name">Atributos de: {{ elementGroup.name }}</h2>
+  <div *ngIf="!disabledAll" class="left-buttons">
+    <div *ngIf="isQAQCUser()" class="left-buttons">
+      <button
+        mat-fab
+        color="warn"
+        matTooltip="Editar Elemento"
+        matTooltipHideDelay="300"
+        class="edit-button"
+        [disabled]="editPosition"
+        (click)="openEditElement()">
+        <mat-icon class="icon-button" svgIcon="edit-2"></mat-icon>
+      </button>
+      <button
+        mat-fab
+        color="warn"
+        matTooltip="Eliminar Elemento"
+        matTooltipHideDelay="300"
+        class="button-to-delete"
+        [disabled]="editPosition" 
+        (click)="openDeleteElement()">
+        <mat-icon class="icon-button" svgIcon="delete"></mat-icon>
+      </button>
+    </div>
+    <button   
+      mat-raised-button
+      class="button-add"
+      [disabled]="editPosition" 
+      (click)="manageElementSynonyms()">
+      Agregar Sinónimo
+    </button>
+    <button 
+      mat-raised-button
+      class="button-add"
+      [disabled]="editPosition"
+      (click)="openAddAttribute()">
+      Agregar Atributo
+    </button>
+    <app-button label="{{ editPosition ? 'Desactivar Reordenar' : 'Activar Reordenar' }}" (click)="toggleEditPosition()"></app-button>
+    <app-button *ngIf="pendingChanges" label="Guardar Cambios" (click)="saveChanges()"></app-button>
+  </div>  
+  <div class="element-image-container">
+    <div *ngIf="!elementImage && !imagePreview" class="image-drop-zone" (click)="fileInput.click()">
+      <mat-icon class="icon-button" svgIcon="cloud-upload"></mat-icon>
+      <span>Cargar una imagen para el elemento (PNG 64x64 px)</span>
+      <input #fileInput type="file" (change)="onFileSelected($event)" accept=".png" hidden>
+    </div>
+  
+    <div *ngIf="imagePreview" class="image-preview-wrapper">
+      <img [src]="imagePreview" alt="Previsualización" class="png-grid">
+      <div class="image-actions-preview">
+        <button mat-raised-button color="primary" (click)="saveImage()" [disabled]="isUploading">
+          {{ isUploading ? 'Guardando...' : 'Guardar' }}
+        </button>
+        <button mat-stroked-button (click)="cancelImageUpload()">Cancelar</button>
+      </div>
+    </div>
+  
+    <div *ngIf="elementImage && !imagePreview" class="image-display-wrapper">
+      <img [src]="elementImage" alt="Imagen del elemento" class="png-grid">
+      <div class="left-buttons">
+        <button mat-fab color="warn" matTooltip="Editar Imagen" matTooltipHideDelay="300" class="edit-button"
+          (click)="triggerFileInput(fileInput)">
+          <mat-icon class="icon-button" svgIcon="edit-2"></mat-icon>
+        </button>
+        <button mat-fab color="warn" matTooltip="Eliminar Imagen" matTooltipHideDelay="300" (click)="deleteImage()"
+          class="button-to-delete">
+          <mat-icon class="icon-button" svgIcon="delete"></mat-icon>
+        </button>
+        <button mat-fab color="warn" matTooltip="Descargar Imagen" matTooltipHideDelay="300" class="download-button"
+          (click)="downloadImage()">
+          <mat-icon class="icon-button" svgIcon="cloud-download"></mat-icon>
+        </button>
+      </div>
+      <input #fileInput type="file" (change)="onFileSelected($event)" accept=".png" hidden>
+    </div>
+  </div>
+  <div *ngIf="synonyms && synonyms.length > 0" class="synonyms-section">
+    <h4 class="left-buttons synonym-buttons">Sinónimos:</h4>
+    <div *ngFor="let synonym of synonyms" class="synonym-item">
+      <span>{{ synonym.synonym }}</span>
+      <div *ngIf="!disabledAll && isQAQCUser()" class="left-buttons synonym-buttons">
+        <button
+          mat-fab
+          color="warn"
+          matTooltip="Editar Sinónimo"
+          matTooltipHideDelay="300"
+          class="edit-button"
+          [disabled]="editPosition"
+          (click)="openEditSynonym(synonym)">
+          <mat-icon svgIcon="edit-2"></mat-icon>
+        </button>
+        <button
+          mat-fab
+          color="warn"
+          matTooltip="Eliminar Sinónimo"
+          matTooltipHideDelay="300"
+          class="button-to-delete"
+          [disabled]="editPosition" 
+          (click)="openDeleteSynonymModal(synonym)">
+          <mat-icon svgIcon="delete"></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+ </div>
+</mat-card>
+ 
+<div *ngIf="hasValidAttributes()" class="atributos-grid">
+ <div
+  *ngFor="let atributo of groupedAttributes; let i = index"
+  class="atributo-card"
+  [draggable]="editPosition"
+  (dragstart)="onDragStart($event, i)"
+  (dragover)="onDragOver($event, i)"
+  (drop)="onDrop($event, i)"
+  [class.drag-over]="dragIndexOver === i && editPosition"
+ >
+  <div class="atributo-card__header">
+   <span>#{{ i + 1 }}. {{ atributo.name }}</span>
+   <span *ngIf="editPosition && !disabledAll" class="drag-handle">
+    <mat-icon>open_with</mat-icon>
+   </span>
+   <div *ngIf="!disabledAll && isQAQCUser()" class="left-buttons">
+    <button
+     mat-fab
+     color="warn"
+     matTooltip="Editar atributo"
+     matTooltipHideDelay="300"
+     class="edit-button"
+     [disabled]="editPosition" (click)="openAddAttribute(atributo)">
+     <mat-icon class="icon-button" svgIcon="edit-2"></mat-icon>
+    </button>
+    <button
+     mat-fab
+     color="warn"
+     matTooltip="Eliminar atributo"
+     matTooltipHideDelay="300"
+     class="delete-button"
+     [disabled]="editPosition" (click)="openDeleteConfirmationModal(atributo.id, atributo.name, atributo.orderInDescription)">
+     <mat-icon class="icon-button" svgIcon="delete"></mat-icon>
+    </button>
+   </div>
+  </div>
+  <span>(Unidad de medida: {{ atributo.measurementUnit || 'N/A' }})</span><br><br>
+  <div *ngIf="!disabledAll">
+    <app-button label="+ Agregar Opción" [disable]="editPosition" (click)="openAddOption(atributo.id)"></app-button>
+  </div>
+  <ul class="atributo-card__options">
+   <app-view-attribute-options
+    [attributeName]="atributo.name"
+    [attributeOptions]="atributo.options"
+    [idUser]="idUser"
+    (updateOptions)="reloadAttributeList()"
+    (editOption)="openAddOption(atributo.id, $event)"
+    [isQAQCUser]="isQAQCUser()"
+    [disabledAll]="disabledAll"
+   ></app-view-attribute-options>
+  </ul>
+ </div>
+</div>
+ 
+<div *ngIf="showAddSynonymsModal" class="modal">
+ <div class="modal__overlay" (click)="closeAddSynonymsModal()"></div>
+ <div class="modal__content" (click)="$event.stopPropagation()">
+  <button class="button button--close" (click)="closeAddSynonymsModal()">×</button>
+  <app-add-synonyms-component
+   [idStandardElements]="idStandardElement"
+   [standardElementName]="elementGroup.name"
+      [synonymToEdit]="selectedSynonym"
+   (synonymModified)="onSynonymModified()"
+  ></app-add-synonyms-component>
+ </div>
+</div>
+ 
+<div *ngIf="showAddOption" class="modal">
+ <div class="modal__overlay" (click)="closeAddOption()"></div>
+ <div class="modal__content" (click)="$event.stopPropagation()">
+  <button class="button button--close" (click)="closeAddOption()">×</button>
+  <app-attribute-options
+   [idStandardAttribute]="idStandardAttribute"
+   [optionToEdit]="selectedOption"
+   (cerrarFormulario)="closeAddOption()"
+   (opcionAgregada)="reloadAttributeList()"
+  ></app-attribute-options>
+ </div>
+</div>
+ 
+<div *ngIf="showDeleteConfirmationModal" class="modal">
+ <div class="modal__overlay" (click)="closeDeleteConfirmationModal()"></div>
+ <div class="modal__content" (click)="$event.stopPropagation()">
+  <button class="button button--close" (click)="closeDeleteConfirmationModal()">×</button>
+  <app-confirm-attribute-to-be-deleted
+   [idStandardElement] = "idStandardElement"
+   [idStandardAttribute] = "idStandardAttribute"
+   [StandardAttributeName] = "attributeName"
+   [attributeOrderInDescription] = "attributeOrderInDescription"
+   (updateAttributes)="reloadAttributeList()"
+   [idUser]="idUser"
+  ></app-confirm-attribute-to-be-deleted>
+ </div>
+</div>
+ 
+<div *ngIf="showDeleteElement" class="modal">
+ <div class="modal__overlay" (click)="closeDeleteElement()"></div>
+ <div class="modal__content" (click)="$event.stopPropagation()">
+  <button class="button button--close" (click)="closeDeleteElement()">×</button>
+  <app-confirm-element-to-be-deleted
+   *ngIf="idStandardElement !== null"
+   [idStandardElement]="idStandardElement"
+   [nameStandardElement]="elementGroup.name"
+   (updateElement)="reloadAttributeList()"
+   [idUser]="idUser">
+  </app-confirm-element-to-be-deleted>
+ </div>
+</div>
+
+<div *ngIf="showEditElementModal" class="modal">
+ <div class="modal__overlay" (click)="closeEditElement()"></div>
+ <div class="modal__content" (click)="$event.stopPropagation()">
+  <button class="button button--close" (click)="closeEditElement()">×</button>
+  <add-element-component
+    *ngIf="idStandardElement !== null"
+    [idStandardElement]="idStandardElement"
+    [editElement] = "true">
+  </add-element-component>
+ </div>
+</div>
+
+<div *ngIf="showDeleteSynonymModal" class="modal">
+  <div class="modal__overlay" (click)="closeDeleteSynonymModal()"></div>
+  <div class="modal__content" (click)="$event.stopPropagation()">
+    <button class="button button--close" (click)="closeDeleteSynonymModal()">×</button>
+    <app-confirm-synonym-to-be-deleted
+      *ngIf="selectedSynonym"
+      [synonym]="selectedSynonym"
+      [idUser]="idUser"
+      (synonymDeleted)="onSynonymDeleted()"
+      (cancel)="closeDeleteSynonymModal()">
+    </app-confirm-synonym-to-be-deleted>
+  </div>
+</div>
+
+<div *ngIf="!hasValidAttributes()">
+ <p>No hay atributos válidos aún.</p>
+</div>

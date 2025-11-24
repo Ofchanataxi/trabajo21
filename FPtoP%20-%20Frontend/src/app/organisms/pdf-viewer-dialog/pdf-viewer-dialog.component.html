@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div class="toolbar">
+  <button (click)="zoomIn()">+ Zoom In</button>
+  <button (click)="zoomOut()">- Zoom Out</button>
+  <button (click)="resetZoom()">Reset Zoom</button>
+</div>
+<div mat-dialog-content>
+  <pdf-viewer
+    [src]="data.url"
+    [render-text]="true"
+    [original-size]="true"
+    style="width: 100%; height: 100%"
+    [zoom]="zoom"
+  ></pdf-viewer>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cerrar</button>
+</div>

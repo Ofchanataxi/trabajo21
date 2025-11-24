@@ -1,0 +1,20 @@
+<div class="table-container">
+  <div class="table-column description">
+    <app-button [label]="'Limpiar tabla'" (click)="cleanTable()"></app-button>
+    <logistic-tally-sheet-list-test-data
+      (updateRowWithTestDataEvent)="handleTestData($event)"
+      [testDataList]="testDataList"
+    ></logistic-tally-sheet-list-test-data>
+
+    <ag-grid-angular
+      #agGrid
+      class="ag-theme-dls"
+      style="width: 100%; height: auto"
+      [rowData]="rowData"
+      [columnDefs]="columnDefs"
+      [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
+  </div>
+</div>

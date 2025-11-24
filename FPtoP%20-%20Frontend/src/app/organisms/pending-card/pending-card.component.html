@@ -1,0 +1,18 @@
+<div class="content">
+  <mat-card class="pending-card">
+    <mat-card-header class="header">
+      <mat-card-title class="title">{{ title }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="contentCard">
+      <p class="subtitle">Realizado por:</p>
+      <p class="text">{{ madeBy }}</p>
+      <p class="subtitle">Fecha de envío:</p>
+      <p class="text">{{ sendDate | dateCustomFormat }}</p>
+      <p class="text">{{ businessLine }}</p>
+      <br />
+    </mat-card-content>
+    <mat-card-actions class="card-actions">
+      <ng-content class="contentCard"></ng-content>
+    </mat-card-actions>
+  </mat-card>
+</div>

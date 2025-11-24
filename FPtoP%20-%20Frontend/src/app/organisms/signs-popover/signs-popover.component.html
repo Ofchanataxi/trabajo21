@@ -1,0 +1,45 @@
+<app-button
+  class="hasValidSigns"
+  *ngIf="hasSigns && !invalidSigns"
+  [slbPopoverTriggerFor]="popup1"
+  [slbPopoverBackdropClass]="slbPopoverBackdropClass"
+  [slbPopoverHasBackdrop]="slbPopoverHasBackdrop"
+  [slbPopoverTrigger]="slbPopoverTrigger"
+  [slbPopoverCloseOnClick]="slbPopoverCloseOnClick"
+  [slbPopoverCloseOnEscape]="slbPopoverCloseOnEscape"
+  [slbPopoverDisabled]="slbPopoverDisabled"
+  [slbPopoverTarget]="useTargetElement"
+  (closed)="closed.emit($event)"
+  (opened)="opened.emit($event)"
+  [isPrimary]="true"
+  [label]="label"
+  slb-button
+  color="primary"
+  matTooltip="Detalle de las firmas electrónicas del documento"
+>
+  <mat-icon>check</mat-icon>
+</app-button>
+
+<app-button
+  *ngIf="hasSigns && invalidSigns"
+  [slbPopoverTriggerFor]="popup1"
+  [slbPopoverBackdropClass]="slbPopoverBackdropClass"
+  [slbPopoverHasBackdrop]="slbPopoverHasBackdrop"
+  [slbPopoverTrigger]="slbPopoverTrigger"
+  [slbPopoverCloseOnClick]="slbPopoverCloseOnClick"
+  [slbPopoverCloseOnEscape]="slbPopoverCloseOnEscape"
+  [slbPopoverDisabled]="slbPopoverDisabled"
+  [slbPopoverTarget]="useTargetElement"
+  (closed)="closed.emit($event)"
+  (opened)="opened.emit($event)"
+  [label]="label"
+  [isError]="true"
+  slb-button
+  matTooltip="Detalle de las firmas electrónicas del documento"
+>
+  <mat-icon>warning</mat-icon>
+</app-button>
+
+<slb-popover [hideArrow]="hideArrow" #popup1>
+  <ng-content></ng-content>
+</slb-popover>

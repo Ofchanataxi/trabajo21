@@ -1,0 +1,80 @@
+<div class="files">
+  <div class="header" *ngIf="files.length > 0">
+    <div class="left">
+      <p>Archivos seleccionados</p>
+    </div>
+    <!-- <div class="right">
+      <app-button-delete-selected (dropAllEvent)="dropAllFiles()"></app-button-delete-selected>
+    </div> -->
+  </div>
+  <div class="containerNameFile" *ngFor="let item of files; let i = index">
+    <div class="rowContainer">
+      <div class="firstRow">
+        <div class="left">
+          <!-- <p>Checbox</p> -->
+          <p>#{{ i + 1 }}</p>
+        </div>
+        <div class="center">
+          <span #fileName class="fileName">{{ reduceFileText(item.name) }} </span>
+          <div class="options">
+            <app-button-download-file [file]="item"></app-button-download-file>
+            <app-button-preview-pdf
+              [file]="item"
+              *ngIf="item.type === 'application/pdf'"
+            ></app-button-preview-pdf>
+            <app-button-signs [file]="item" [i]="i" (signDataLoaded)="onSignDataLoaded($event)"></app-button-signs>
+            <app-missing-signatures-warning
+              *ngIf="requiredSignatures"
+              [signs]="signs"
+              [totalPeopleRequiredToSign]="totalPeopleRequiredToSign"
+            >
+            </app-missing-signatures-warning>
+          </div>
+        </div>
+        <!-- <div class="right">
+          <app-button-delete-file
+            [file]="file"
+            [files]="files"
+            [i]="i"
+            [dropzoneComponent]="dropzoneComponent"
+          ></app-button-delete-file>
+        </div> -->
+      </div>
+      <div class="secondRow">
+        <div>
+          <app-progress-upload></app-progress-upload>
+          <!-- <mat-icon
+                    *ngIf="
+                      progress[file.name] !== undefined &&
+                      progress[file.name].completed &&
+                      hasAtLeatOneSign() &&
+                      !checkInvalidSigns(i)
+                    "
+                    class="completed-icon"
+                    >check</mat-icon
+                  >
+                  <mat-icon
+                    *ngIf="
+                      progress[file.name] !== undefined &&
+                      progress[file.name].completed &&
+                      hasAtLeatOneSign() &&
+                      checkInvalidSigns(i)
+                    "
+                    class="completed-icon"
+                    >close</mat-icon
+                  > -->
+          <!-- <mat-icon
+                    *ngIf="
+                      progress[file.name] !== undefined &&
+                      progress[file.name].completed &&
+                      !hasAtLeatOneSign() &&
+                      checkInvalidSigns(i)
+                    "
+                    class="completed-icon"
+                    >check</mat-icon
+                  > -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<app-load-double-ask-dialog
+  *ngIf="showDoubleDropVerification"
+  (remove)="setDoubleVerificationAnswer($event)"
+  #askVerificationOne
+></app-load-double-ask-dialog>
+
+<button
+  (click)="openDoubleVerificationOne($event); $event.stopPropagation()"
+  class="dropButton"
+  matTooltip="Eliminar archivo"
+>
+  <mat-icon *ngIf="showDoubleDropVerification" class="dropOneFile">delete</mat-icon>
+</button>

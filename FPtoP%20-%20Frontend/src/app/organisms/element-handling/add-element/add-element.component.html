@@ -1,0 +1,49 @@
+<p>Formulario para {{ editElement ? 'editar' : 'agregar' }} elementos</p>
+<form [formGroup]="form">
+  <div>
+    <label *ngIf="form.get('name')?.valid || !form.get('name')?.touched">Nombre del Elemento</label>
+    <mat-error *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+      El nombre del elemento es obligatorio
+    </mat-error>
+    <mat-form-field appearance="outline">
+      <input matInput placeholder="Nombre del Elemento" formControlName="name" required />
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-error *ngIf="!idStandardBusinessLine && form.get('name')?.touched">Debe seleccionar una Línea de Negocio</mat-error>
+    <show-id-business-line
+      (idSelected)="getIdBusinessLine($event)"
+      [allowAllOption]="false"
+      [initialSelectedId]="idStandardBusinessLine"> </show-id-business-line>
+  </div>
+
+  <div>
+    <label>Sección de Pozo</label>
+    <mat-error *ngIf="!idStandardWellSection && form.get('name')?.touched">Debe seleccionar una Sección de Pozo</mat-error>
+    <show-idStandard-WellSections
+      (idSelected)="getIdStanardWellSection($event)"
+      [initialSelectedId]="idStandardWellSection">
+    </show-idStandard-WellSections>
+  </div>
+
+  <div>
+    <label>Tipo de Infraestructura de Pozo</label>
+    <mat-error *ngIf="!idStandardWellInfrastructureType && form.get('name')?.touched">Debe seleccionar un Tipo de Infraestructura de Pozo</mat-error>
+    <show-idStandardWell-InfrastructureType
+      (idSelected)="getIdStandardWellInfrastructureType($event)"
+      [initialSelectedId]="idStandardWellInfrastructureType">
+    </show-idStandardWell-InfrastructureType>
+  </div>
+
+  <mat-checkbox formControlName="showRunBES">¿Mostrar Run BES?</mat-checkbox>
+  <mat-checkbox formControlName="verified">¿Verificado?</mat-checkbox>
+  <mat-checkbox formControlName="needSerialNumber">Necesita número de serie?</mat-checkbox>
+
+  <div style="display: flex; justify-content: center; margin-top: 20px;">
+    <button mat-raised-button color="primary"
+      (click)="onSubmit()"
+      [disabled]="form.invalid || idStandardBusinessLine === null || idStandardWellSection === null || idStandardWellInfrastructureType === null || (editElement && !formChanged)">
+      {{ editElement ? 'Actualizar Elemento' : 'Añadir Elemento' }}
+    </button>
+  </div>
+</form>

@@ -1,0 +1,43 @@
+<table 
+  *ngIf="attributeOptions.length > 0; else emptyOptions" 
+  [ngClass]="isQAQCUser ? 'options-table full-width' : 'options-table narrow-width'"
+>
+  <thead>
+    <tr>
+      <th>Opciones</th>
+      <th *ngIf="isQAQCUser">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let option of attributeOptions">
+      <td>{{ option.option_value }}</td>
+      <td *ngIf="isQAQCUser">
+        <button class="edit-button" (click)="openEditForm(option)">
+          <mat-icon svgIcon="edit-2"> </mat-icon>
+        </button>
+        <button (click)="openDeleteConfirmationModal(option.option_id, option.option_value)" class="delete-button">
+          <mat-icon svgIcon="delete"> </mat-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+ 
+<ng-template #emptyOptions>
+  <p></p>
+</ng-template>
+
+
+<div *ngIf="showDeleteConfirmationModal" class="modal">
+  <div class="modal__overlay" (click)="closeDeleteConfirmationModal()"></div>
+  <div class="modal__content" (click)="$event.stopPropagation()">
+    <button class="button button--close" (click)="closeDeleteConfirmationModal()">×</button>
+    <app-confirm-options-to-be-deleted
+          [idStandardAttributeOption] = "option_id"
+          [idUser]="idUser"
+          [option]="option_value"
+          [attributeName]="attributeName"
+          (updateOptions)="reloadOptionList()"
+    ></app-confirm-options-to-be-deleted>
+  </div>
+</div>
