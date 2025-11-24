@@ -1,0 +1,33 @@
+<div *ngIf="showOverlay" class="overlay">
+  <div class="generic-request-page">
+    <button class="close-button" (click)="onCancel()">X</button>
+
+    <h2 *ngIf="title">{{ title }}</h2>
+    <p *ngIf="message">{{ message }}</p>
+
+    <textarea *ngIf="textboxText" placeholder="{{textboxText}}" rows="4"></textarea>
+    <ng-content></ng-content>
+
+    <label *ngIf="checkboxText">
+      <input type="checkbox">{{checkboxText}}
+    </label>
+
+    <div class="actions">
+      <app-button-red  *ngIf="cancelButtonText"
+        (click)="onCancel()" 
+        label="{{ cancelButtonText }}"       
+        backgroundColor="#FFFFFF" 
+        color="#FFFFFF">
+      </app-button-red>
+
+      <!--<app-button *ngIf="confirmButtonText" (click)="onConfirm()" label="{{ confirmButtonText }}">--> 
+        <div [class.disabled-wrapper]="!confirmEnabled">
+          <app-button 
+            *ngIf="confirmButtonText" 
+            (click)="onConfirm()" 
+            [label]="confirmButtonText">
+          </app-button>
+        </div>
+    </div>
+  </div>
+</div>

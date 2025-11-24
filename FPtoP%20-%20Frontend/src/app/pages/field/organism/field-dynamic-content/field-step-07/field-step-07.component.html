@@ -1,0 +1,33 @@
+<app-generic-request-page #genericRequestPage
+  [title]="'Rechazar información'"
+  [message]="'Por favor, proporciona más información para rechazar la revisión. Tu retroalimentación es importante para corregir los problemas encontrados.
+  Ingresa las observaciones por las que rechazas la información'"
+  [confirmButtonText]="'Rechazar revisión'"
+  [cancelButtonText]="'Cancelar'"
+
+></app-generic-request-page>
+
+<app-custom-shaya-header-icon headerIcon="document" headerTitle="Documentos generados">
+</app-custom-shaya-header-icon>
+<div class="buttons-wrapper">
+  <div class="button-container">
+    <app-button  (click)="showFile()" label="Visualizar Tally"></app-button>
+  </div>
+  <div class="button-container">
+    <app-button label="Visualizar Sumario"></app-button>
+  </div>
+  <div class="button-container">
+    <app-button label="Visualizar Diagrama mecánico"></app-button>
+  </div>
+  <div class="button-container">
+    <app-button label="Visualizar RUN BES firmado"></app-button>
+  </div>
+  <div class="button-container">
+    <app-button-red
+              label="Rechazar"
+              (click)="genericRequestPage.openOverlay()"
+            >
+    </app-button-red>
+    <app-button label="Finalizar actividad del pozo"></app-button>
+  </div>
+</div>

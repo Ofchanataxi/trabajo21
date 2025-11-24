@@ -1,0 +1,159 @@
+<div *ngIf="dataToDisplay">
+  <div *ngFor="let group of objectKeys(dataToDisplay)">
+   <h2 class="table-title"
+     #tableTitle
+     [ngStyle]="getTitleStyle()"
+     *ngIf="group !== 'Default'"> <!--Nico - Fran: No se incluye el encabezado default-->
+     {{ group }}
+   </h2>
+
+   <ng-container *ngIf="isObject(dataToDisplay[group]) && !isArrayOfRows(dataToDisplay[group]); else displayTable">
+     <ng-container *ngTemplateOutlet="recursiveTemplate; context: { $implicit: dataToDisplay[group], label: group, fullPath: group }"></ng-container>
+   </ng-container>
+
+   <ng-template #displayTable>
+     <div *ngIf="!isCollapsed(group)">
+       <table class="custom-table">
+         <thead>
+           <tr>
+             <th *ngFor="let col of getColumnToDisplay(group)">
+               {{ getColumnDisplayName(col) }}
+             </th>
+           </tr>
+         </thead>
+
+         <tbody *ngIf="getEnableDragAndDrop('')" cdkDropList
+         [cdkDropListData]="getDataFromLabel(group, dataToDisplay)"
+         (cdkDropListDropped)="onDrop($event, group)">
+           <tr *ngFor="let row of getDataFromLabel(group, dataToDisplay); let rowIndex = index" cdkDrag>
+             <ng-container *ngTemplateOutlet="tableData; context: { group: group, row: row, rowIndex: rowIndex }"></ng-container>
+           </tr>
+
+         </tbody>
+         <tbody *ngIf="!getEnableDragAndDrop('')" >
+           <tr *ngFor="let row of getDataFromLabel(group, dataToDisplay); let rowIndex = index">
+             <ng-container *ngTemplateOutlet="tableData; context: { group: group, row: row, rowIndex: rowIndex }"></ng-container>
+           </tr>
+
+         </tbody>
+       </table>
+     </div>
+   </ng-template>
+ </div>
+</div>
+
+<ng-template #recursiveTemplate let-data let-label="label" let-fullPath="fullPath">
+ <div *ngFor="let group of objectKeys(data)">
+   <h2 class="table-subtitle"
+   *ngIf="shouldShowTableTitle() && (isGrouped || group !== 'Default') && group !== 'Default'"
+   [ngStyle]="getTitleStyle()"
+   style="display: flex; justify-content: space-between; align-items: center;">
+
+   <img (click)="eraseGroup(fullPath + '/' + group)" src='../../../assets/delete_icon.png' alt="Erase" style="height: 30px; width: 30px; margin: 10px; margin-right: auto;" />
+
+   <span>{{ group }}</span>
+
+   <img (click)="toggleCollapse(fullPath + '/' + group)" [src]="isCollapsed(fullPath + '/' + group) ? '../../../assets/expand_icon.png' : '../../../assets/collapse_icon.png'" alt="Toggle Collapse" style="height: 30px; width: 30px; margin: 10px; margin-left: auto;" />
+</h2>
+
+   <div *ngIf="!isCollapsed(fullPath + '/' + group)">
+     <ng-container *ngIf="isObject(data[group]) && !isArrayOfRows(data[group]); else displayTable">
+       <ng-container *ngTemplateOutlet="recursiveTemplate; context: { $implicit: data[group], label: label + '/' + group, fullPath: fullPath + '/' + group }"></ng-container>
+     </ng-container>
+   </div>
+
+   <ng-template #displayTable>
+     <div *ngIf="!isCollapsed(fullPath + '/' + group)">
+       <table class="custom-table">
+         <thead>
+           <tr>
+             <th *ngFor="let col of getColumnToDisplay(fullPath + '/' + group)">
+               {{ getColumnDisplayName(col) }}
+             </th>
+           </tr>
+         </thead>
+         <tbody>
+           <tr *ngFor="let row of data[group]">
+             <td *ngFor="let col of getColumnToDisplay(fullPath + '/' + group)">
+               {{ row[col] }}
+             </td>
+           </tr>
+         </tbody>
+       </table>
+     </div>
+   </ng-template>
+ </div>
+</ng-template>
+
+
+
+<ng-template #tableData let-group="group" let-row="row" let-rowIndex="rowIndex">
+ <ng-container *ngIf="row['grouprownumber'] === '1'">
+   <td *ngFor="let col of getColumnToDisplay(group); let colIndex = index" [ngClass]="getColumnClass(col)" [ngStyle]="getColumnStyle(col)">
+     <ng-container *ngFor="let element of getColumnRender(col)">
+       <ng-container [ngSwitch]="element.type">
+               <ng-container *ngSwitchCase="'text'">
+                 <ng-container *ngIf="col==='documentos'">
+                     <ng-container *ngFor="let file of getItemsByGroupId(row['groupid'])">
+                      <p  class="clickable"
+                          (click)="executeFunction(file, col, element)">
+                          {{ file['documentos'] }}
+                      </p>
+                     </ng-container>
+
+                 </ng-container>
+                 <ng-container *ngIf="col !== 'documentos'">
+
+                   <span *ngIf="element.position === 'right' && element.value !== undefined" (click)="executeFunction(row, col, element)">{{ row[element.value] }}{{element.label}}</span>
+                   <span *ngIf="element.position === 'left' && element.value !== undefined" (click)="executeFunction(row, col, element)">{{element.label}}{{ row[element.value] }}</span>
+                 </ng-container>
+
+               </ng-container>
+
+               <ng-container *ngSwitchCase="'app-button'">
+               <app-button [isHover]=true [isPrimary]=false [label]="element.label || ''" (click)="executeFunction(row, col, element, rowIndex)"></app-button>
+               </ng-container>
+               <br/>
+               <ng-container *ngSwitchCase="'app-button-red'">
+                 <app-button-red [label]="element.label || ''" (click)="executeFunction(row, col, element)"></app-button-red>
+               </ng-container>
+
+               <ng-container *ngSwitchCase="'radio'">
+                 <ng-container *ngFor="let label of getColumnLabel(col)?.split('/') || [col]">
+                   <label>
+                     <input type="radio" [name]="'radio-' + group + '-' + rowIndex + '-' + colIndex" /> {{ label }}
+                   </label>
+                 </ng-container>
+               </ng-container>
+
+
+               <ng-container *ngSwitchCase="'acum'">
+                <ng-container *ngFor="let val of getCumulativeValuesUpToRow(group, col, rowIndex)">
+                  <label>
+                    <span>{{ val }}</span>
+                  </label>
+                </ng-container>
+              </ng-container>
+
+               <ng-container *ngSwitchCase="'input'">
+                 <ng-container *ngFor="let label of getColumnLabel(col)?.split('/') || [col]">
+                   <label *ngIf="element.position === 'left' && element.value !== undefined">
+                     <!--<input [ngStyle]="{ width: element.width }" type="number" [value]="row[element.value] || '0'" (change)="executeFunction(row, col, element)"/>-->
+                     <input 
+                        (input)="onValueChange(group, row, col, $event.target)" 
+                        [ngStyle]="{ width: element.width }" 
+                        type="number" 
+                        min="0" 
+                        [max]="row['ElementRelease.quantity']"   
+                        (change)="executeFunction(row, col, element)"
+                        />
+                        
+                    </label>
+                 </ng-container>
+               </ng-container>
+        
+       </ng-container>
+     </ng-container>
+   </td>
+ </ng-container>
+</ng-template>

@@ -1,0 +1,245 @@
+
+<div *ngIf="dataToDisplay">
+  <div *ngFor="let group of groups(dataToDisplay)">
+    <h2 class="table-group">
+      
+      <span class="actions-container">
+
+        <img (click)="toggleCollapse(group)"
+             [src]="isCollapsed(group) ? '../../../assets/expand_icon.png' : '../../../assets/collapse_icon.png'"
+             alt="Toggle Collapse"
+             style="height: 30px; width: 30px; margin-right: auto; margin-left: 10px;" />
+
+      </span>
+      <span class="title-container"> {{ group }}</span>
+      <span class="actions-container">
+
+        <app-button [isHover]=true [isPrimary]=false *ngIf="group ==='GENERAL'" label="Agregar" (click)="genericRequestPage_AddElement.openOverlay('{{group}}')"></app-button>
+        <!--<app-button [isHover]=true [isPrimary]=false *ngIf="group ==='ARENAS'" label="Agregar" (click)="addSandRow()"></app-button>-->
+        <app-button [isHover]=true [isPrimary]=false *ngIf="group ==='ARENAS'" label="Agregar" (click)="addSandRow()"></app-button>
+        <app-button [isHover]=true [isPrimary]=false *ngIf="group ==='EQUIPOS'" label="Agregar" (click)="genericRequestPage_AddEquipment.openOverlay('{{group}}')"></app-button>
+
+      </span>
+    </h2>
+
+    <div *ngIf="!isCollapsed(group)">
+    <ng-container *ngIf="isObject(dataToDisplay[group]) && !isArrayOfRows(dataToDisplay[group]); else displayTable">
+      <ng-container *ngTemplateOutlet="recursiveTemplate; context: { $implicit: dataToDisplay[group], label: group, fullPath: group }"></ng-container>
+    </ng-container>
+    </div>
+
+    <ng-template #displayTable>
+      <div *ngIf="!isCollapsed(group)">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th *ngFor="let col of getColumnToDisplay(group)"
+              [ngStyle]="{ width: getColumnWidth(col) }"
+              >
+                {{ getColumnDisplayName(col) }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr  *ngFor="let row of getDataFromLabel(group, dataToDisplay); let rowIndex = index">
+              <ng-container *ngTemplateOutlet="tableData; context: { group: group, row: row, rowIndex: rowIndex }"></ng-container>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<ng-template #recursiveTemplate let-data let-label="label" let-fullPath="fullPath">
+
+  <div *ngFor="let group of objectKeys(data)">
+    <h2 class="table-title"
+
+      *ngIf="shouldShowTableTitle() && (isGrouped || group !== 'Default') && group !== 'Default' && !group.includes('DISPARO')"
+      [ngStyle]="getTitleStyle()"
+      style="display: flex; justify-content: space-between; align-items: center;">
+
+      <img (click)="eraseGroup(fullPath + '<DELIM>' + group)" src='../../../assets/delete_icon.png' alt="Erase" style="height: 30px; width: 30px; margin: 10px; margin-right: auto;" />
+        
+        <ng-container *ngIf="fullPath.includes('ARENAS'); else normalGroup">
+          <span [innerHTML]="getArenaLabel(group.split('|~|')[0])"></span>
+        </ng-container>
+        <ng-template #normalGroup>
+          <span [innerHTML]="group.split('|~|')[0]"></span>
+        </ng-template>
+        
+        
+
+      <img (click)="toggleCollapse(fullPath + '<DELIM>' + group)" [src]="isCollapsed(fullPath + '<DELIM>' + group) ? '../../../assets/expand_icon.png' : '../../../assets/collapse_icon.png'" alt="Toggle Collapse" style="height: 30px; width: 30px; margin: 10px; margin-left: auto;" />
+       
+  </h2>
+  <tr class="table-perforations-center"
+    *ngIf="shouldShowTableTitle() && (isGrouped || group !== 'Default') && group !== 'Default' && group === 'DISPAROS' ">
+    <span>{{ group }}</span>
+    <img (click)="toggleCollapse(fullPath  + '<DELIM>' + group)"
+         [src]="isCollapsed(fullPath + '<DELIM>' + group) ? '../../../assets/expand_icon.png' : '../../../assets/collapse_icon.png'"
+         alt="Toggle Collapse" />
+</tr>
+  <h2 class="table-perforations"
+    *ngIf="shouldShowTableTitle() && (isGrouped || group !== 'Default') && group !== 'Default' && group.includes('DISPARO:') ">
+
+
+    <img (click)="erasePerforation(fullPath + '<DELIM>' + group)" src='../../../assets/delete_icon.png' alt="Erase" />
+
+    <span>{{ getTrimmedGroup(group) }}{{ rowInputValues[fullPath+group+'md_top_shot'] || '' }} - {{ rowInputValues[fullPath+group+'md_bottom_shot'] || '' }}</span>
+
+</h2>
+
+    <div *ngIf="!isCollapsed(fullPath + '<DELIM>' + group)">
+      <ng-container *ngIf="isObject(data[group]) && !isArrayOfRows(data[group]); else displayTable">
+        <ng-container *ngTemplateOutlet="recursiveTemplate; context: { $implicit: data[group], label: label + '<DELIM>' + group, fullPath: fullPath + '<DELIM>' + group }"></ng-container>
+      </ng-container>
+    </div>
+    <ng-template #displayTable>
+      <div *ngIf="!isCollapsed(fullPath + '<DELIM>' + group)">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th *ngFor="let col of getColumnToDisplay(fullPath + '<DELIM>' + group)"
+              [ngStyle]="{ width: getColumnWidth(col) }">
+                {{ getColumnDisplayName(col) }}
+              </th>
+            </tr>
+          </thead>  
+          <tbody>
+            <tr *ngFor="let row of data[group]; let rowIndex = index"
+                [ngClass]="{
+                  'highlight-updated': row.state === 'updated' || row.state === 'new' || row.state === 'raw',
+                  'highlight-to-delete': row.state === 'delete'
+                }">
+                <td  [ngStyle]="{ 'text-align': getColumnAlign(col) }" *ngFor="let col of getColumnToDisplay(fullPath + '<DELIM>' + group); let colIndex = index">
+                <ng-container  *ngFor="let element of getColumnRender(col)">
+                  <ng-container [ngSwitch]="element.type">
+
+                    <ng-container *ngSwitchCase="'text'">
+                      <span  *ngIf="element.position === 'right' && element.value !== undefined">{{ row[element.value] }}</span>
+                      <span  *ngIf="element.position === 'left' && element.value !== undefined">{{ row[element.value] }}</span>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'app-button'">
+                      <app-button [isHover]=true [isPrimary]=false [label]="element.label || ''" (click)="executeFunction(row, col, element)"></app-button>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'app-button-red'">
+                      <app-button-red [label]="element.label || ''" (click)="executeFunction(row, col, element)"></app-button-red>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'radio'">
+                      <ng-container *ngFor="let label of getColumnLabel(col)?.split('<DELIM>') || [col]">
+                        <label>
+                          <input type="radio" [name]="'radio-' + group + '-' + rowIndex + '-' + colIndex" /> {{ label }}
+                        </label>
+                      </ng-container>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'input'">
+                      <ng-container *ngFor="let label of getColumnLabel(col)?.split('<DELIM>') || [col]">
+                        <label *ngIf="element.position === 'left' && element.value !== undefined">
+                            <ng-container *ngIf="itsComboBox(row)">
+                              <select
+                                class="full-width"
+                                [ngModel]="getSelectedOptionId(row)"
+                                (change)="onValueChangeOption(group, row, col, $event)">
+                                <option *ngFor="let opt of getOptionsForRow(row)" [value]="opt.idStandardAttributeOptions">
+                                 {{ opt.value }} 
+                                </option>
+                              </select>
+                            </ng-container>
+                            <ng-container *ngIf="!itsComboBox(row)">
+                              <!--<input (input)="onValueChange(group, row, col, $event.target)" *ngIf="row['campo']==='md_top_shot' || row['campo']==='md_bottom_shot'" type="text" [(ngModel)]="rowInputValues[fullPath+group+row['campo']]" [value]="row[col]" [disabled]="userInteractionGuard(row)" />
+                              <input (input)="onValueChange(group, row, col, $event.target)" *ngIf="row['campo']!=='md_top_shot' && row['campo']!=='md_bottom_shot'" type="text" [value]=" row[col]" [disabled]="userInteractionGuard(row)"/>  
+                              -->
+                              <input (input)="onValueChange(group, row, col, $event.target)"  type="text" [value]=" row[col]" [disabled]="userInteractionGuard(row)"/>  
+                             
+                            </ng-container>
+
+                              </label>
+                          
+                      </ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'checkbox'">
+                      <ng-container *ngFor="let label of getColumnLabel(col)?.split('<DELIM>') || [col]">
+                        <label *ngIf="element.position === 'left' && element.value !== undefined && row[col] !== null">
+                        <input
+                            type="checkbox" 
+                            group = "group"
+                            [value]=" row[col] + row[label]" 
+                            [checked]="row['action'] === 'true'"
+                            (change)="onCheckboxChange(group, row, col, $event)"
+                            [disabled]="userInteractionGuard(row)"
+                            />{{label}}
+                        </label>
+                      </ng-container>
+                    </ng-container>
+
+                  </ng-container>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </ng-template>
+    <div class="button-container" *ngIf  = "label=='ARENAS<DELIM>Default' && fullPath.includes('ARENA') && !isCollapsed(fullPath + '<DELIM>' + group)">
+      <app-button [isHover]=true [isPrimary]=false
+        label = 'Agregar disparo'
+        (click)="addRowPerforation(fullPath + '<DELIM>' + group )">
+      </app-button>
+
+  </div>
+</div>
+</ng-template>
+
+
+
+<ng-template #tableData let-group="group" let-row="row" let-rowIndex="rowIndex">
+    <td *ngFor="let col of getColumnToDisplay(group); let colIndex = index" [ngClass]="getColumnClass(col)" [ngStyle]="getColumnStyle(col)">
+      <ng-container *ngFor="let element of getColumnRender(col)">
+        <ng-container [ngSwitch]="element.type">
+
+          <ng-container *ngSwitchCase="'text'">
+            <span *ngIf="element.position === 'right' && element.value !== undefined">{{ row[element.value] }}</span>
+            <span *ngIf="element.position === 'left' && element.value !== undefined">{{ row[element.value] }}</span>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'app-button'">
+            <app-button [isHover]=true [isPrimary]=false [label]="element.label || ''" (click)="executeFunction(row, col, element)"></app-button>
+          </ng-container>
+          <ng-container *ngSwitchCase="'app-button-red'">
+            <app-button-red [label]="element.label || ''" (click)="executeFunction(row, col, element)"></app-button-red>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'radio'">
+            <ng-container *ngFor="let label of getColumnLabel(col)?.split('<DELIM>') || [col]">
+              <label>
+                <input type="radio" [name]="'radio-' + group + '-' + rowIndex + '-' + colIndex" /> {{ label }}
+              </label>
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'input'">
+            <ng-container *ngFor="let label of getColumnLabel(col)?.split('<DELIM>') || [col]">
+              <label *ngIf="element.position === 'left' && element.value !== undefined">
+                <input (ngModelChange)="onValueChange(group, row, col, $event)" type="text" [value]="row[col] || element.value" [disabled]="userInteractionGuard(row)"/>
+              </label>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'checkbox'">
+            <ng-container *ngFor="let label of getColumnLabel(col)?.split('<DELIM>') || [col]">
+              <label *ngIf="element.position === 'left' && element.value !== undefined">
+                <input type="checkbox" [value]=" row[col] " [disabled]="userInteractionGuard(row)"/>
+              </label>
+            </ng-container>
+          </ng-container>
+
+        </ng-container>
+      </ng-container>
+    </td>
+</ng-template>

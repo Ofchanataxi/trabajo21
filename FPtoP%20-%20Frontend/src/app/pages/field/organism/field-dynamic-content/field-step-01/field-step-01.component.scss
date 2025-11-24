@@ -1,0 +1,93 @@
+@import "src/app/pages/field/field.component.scss";
+
+.button-container {
+    padding: 1%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+
+  .action{
+    color: white!important;
+    margin: 5px;
+  }
+
+
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Space between elements */
+    padding: 20px;
+
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 300px; /* Adjust the width as needed */
+  }
+
+  .form-group label {
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  .form-group select {
+    padding: 8px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-around;
+
+    gap: 20px;
+  }
+
+  app-field-button {
+    flex: 1; /* Make buttons take equal space */
+    max-width: 150px; /* Optional: Set max width for buttons */
+  }
+
+  .custom-form-container {
+    width: 85%;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  .custom-form-container-input {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    border: 2px solid #ADD8E6;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  ::ng-deep .header-content {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding-right: 20px;
+  }
+  
+  .attributes-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 24px;
+    padding-right: 8px; /* espacio para scroll */
+  }
+  
+  .attributes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+  }

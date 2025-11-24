@@ -1,0 +1,2032 @@
+V:14102025-1
+
+<!-- <div *ngIf="isBlocked class="overlay-block"></div> -->
+
+<div class="well-rig-container">
+  <span class="well-rig-text">
+    {{ this.infoDataOperationDetails.wellShortName }}
+    {{ this.infoDataOperationDetails.operationCode }}-{{
+      this.infoDataOperationDetails.operationNumber
+    }}/ {{ this.infoDataOperationDetails.rigName }}</span
+  >
+  <div class="well-rig-actions">
+    <app-field-button
+      *ngIf="this.btnCreateUpdateState === 'Create' || this.btnCreateUpdateState === 'Update'"
+      backgroundColor="shayaSecond"
+      label="{{ this.labelcreateUpdateRb }}"
+      (click)="createRunBesData()"
+    ></app-field-button>
+    <app-field-button
+      *ngIf="this.btnNotificationState && this.btnFileState == false"
+      backgroundColor="shayaBlue"
+      label="{{ this.labelnotifyRb }}"
+      (click)="testNotFunction()"
+    ></app-field-button>
+    <app-field-button
+      *ngIf="this.btnNotificationState && this.btnFileState"
+      backgroundColor="shayaBlue"
+      label="{{ this.labelnotifyRb }}"
+      (click)="genericLoadRunBes.openOverlay()"
+    ></app-field-button>
+    <!-- <app-field-button label="Descargar Reporte .xlsx" (click)="this.showFile()"></app-field-button> -->
+  </div>
+</div>
+
+<app-custom-shaya-header headerTitle="RUN BES" class=""></app-custom-shaya-header>
+
+<!--ENCABEZADO DE REPORTE-->
+
+<div id="RunBesInstalationReport">
+  <div class="container">
+    <div class="part1">
+      <div class="grid-container">
+        <!-- <div class="grid-item" style="grid-column: 1 / -1;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/SLB_Logo_2022.svg" alt="SLB logo" />
+        </div> -->
+
+        <div class="grid-item">Preparado por:</div>
+        <input
+          type="text"
+          placeholder="Preparado por"
+          class="highlight-input"
+          [(ngModel)]="infoDataRunBes.preparadopor"
+          #preparadopor="ngModel"
+          required
+          pattern="^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$"
+          [ngClass]="{ 'input-error': preparadopor.invalid && preparadopor.touched }"
+        />
+        <div class="grid-item">Aprobado por:</div>
+        <input
+          type="text"
+          placeholder="Aprobado por"
+          class="highlight-input"
+          [(ngModel)]="infoDataRunBes.aprobadopor"
+          #aprobadopor="ngModel"
+          required
+          pattern="^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$"
+          [ngClass]="{ 'input-error': aprobadopor.invalid && aprobadopor.touched }"
+        />
+      </div>
+    </div>
+    <div class="part2">
+      <!-- <h5>REPORTE DE INSTALACION - EQUIPO ELECTROSUMERGIBLE</h5> -->
+      <div class="header-text">
+        <h6>Artificial Lift</h6>
+        <h5>REPORTE DE INSTALACION - EQUIPO ELECTROSUMERGIBLE</h5>
+      </div>
+    </div>
+    <div class="part3"><h6>Rev. Formato</h6></div>
+  </div>
+
+  <!--PRIMERA SECCION: DETALLE DE OPERACIONES-->
+
+  <app-custom-shaya-header-blue-small
+    headerTitle="DETALLE DE OPERACIONES"
+  ></app-custom-shaya-header-blue-small>
+
+  <div class="container">
+    <div class="grid-container">
+      <div class="grid-item"><label>Pozo</label></div>
+      <input
+        type="text"
+        [(ngModel)]="infoDataOperationDetails.wellShortName"
+        class="custom-input"
+        placeholder="."
+        readonly
+      />
+
+      <div class="grid-item"><label>Campo</label></div>
+      <input
+        type="text"
+        [(ngModel)]="infoDataOperationDetails.field"
+        class="custom-input"
+        placeholder="."
+        readonly
+      />
+
+      <div class="grid-item"><label>Pais</label></div>
+      <input
+        type="text"
+        [(ngModel)]="infoDataOperationDetails.country"
+        class="custom-input"
+        placeholder="."
+        readonly
+      />
+
+      <div class="grid-item"><label>Zona Productora Inicial</label></div>
+      <input
+        type="text"
+        [(ngModel)]="infoDataOperationDetails.initialProductionZone"
+        class="custom-input"
+        placeholder="."
+        readonly
+      />
+    </div>
+
+    <!-- Segunda seccion de item DETALLE DE OPERACIONES-->
+    <div class="grid-container">
+      <div class="grid-item"><label>Numero de instalacion</label></div>
+      <input
+        type="text"
+        class="custom-input"
+        [value]="
+          infoDataOperationDetails.operationCode + ' - ' + infoDataOperationDetails.operationNumber
+        "
+        placeholder="."
+        readonly
+      />
+      <div class="grid-item"><label>Inicio de instalacion</label></div>
+      <input
+        type="date"
+        class="highlight-input"
+        placeholder="Seleccione fecha"
+        [(ngModel)]="infoDataRunBes.iniciodeinstalacion"
+      />
+      <div class="grid-item"><label>Fin de instalacion</label></div>
+      <input
+        type="date"
+        class="highlight-input"
+        placeholder="Escriba aqui"
+        [(ngModel)]="infoDataRunBes.findeinstalacion"
+      />
+      <div class="grid-item"><label>Arranque</label></div>
+      <input
+        type="date"
+        class="custom-input highlight-input"
+        placeholder="Escriba aqui"
+        [(ngModel)]="infoDataRunBes.arranque"
+      />
+    </div>
+
+    <!-- Tercera seccion de item DETALLE DE OPERACIONES-->
+    <div class="grid-container">
+      <div class="grid-item"><label>Lider instalacion</label></div>
+      <input
+        type="text"
+        class="custom-input highlight-input"
+        placeholder="Escriba aqui"
+        [(ngModel)]="infoDataRunBes.liderinstalacion"
+      />
+      <div class="grid-item"><label>Operador</label></div>
+      <input
+        type="text"
+        class="custom-input highlight-input"
+        placeholder="Escriba aqui"
+        [(ngModel)]="infoDataRunBes.operador"
+      />
+      <div class="grid-item"><label>Lider Arranque</label></div>
+      <input
+        type="text"
+        class="custom-input highlight-input"
+        placeholder="Escriba aqui"
+        [(ngModel)]="infoDataRunBes.liderarranque"
+      />
+      <div class="grid-item"><label>Testigos</label></div>
+      <input
+        type="text"
+        class="custom-input highlight-input"
+        placeholder="Escriba aqui"
+        [(ngModel)]="infoDataRunBes.testigos"
+      />
+    </div>
+
+    <!-- Cuarta seccion de item DETALLE DE OPERACIONES-->
+    <div class="grid-container">
+      <div class="grid-item"><label>Company Man</label></div>
+      <input
+        type="text"
+        class="custom-input highlight-input"
+        placeholder="Escriba aqui"
+        [(ngModel)]="infoDataRunBes.companyman"
+      />
+      <div class="grid-item"><label>Rig</label></div>
+      <input
+        type="text"
+        class="custom-input"
+        [(ngModel)]="infoDataOperationDetails.rigName"
+        placeholder="."
+        readonly
+      />
+      <div class="grid-item"><label>Cliente</label></div>
+      <input
+        type="text"
+        class="custom-input"
+        [(ngModel)]="infoDataOperationDetails.client"
+        placeholder="."
+        readonly
+      />
+      <div class="grid-item"><label>Tipo de Aplicacion</label></div>
+      <select
+        id="aplicacion"
+        class="custom-input highlight-input"
+        [(ngModel)]="infoDataRunBes.tipodeaplicacion"
+      >
+        <option value="sencilla">Sencilla</option>
+        <option value="dual">Dual</option>
+        <option value="inteligente">Inteligente</option>
+      </select>
+    </div>
+  </div>
+
+  <!--FIN PRIMERA SECCION: DETALLE DE OPERACIONES-->
+
+  <!-- DETALLES MECANICOS DE POZO / PROFUNDIDADES DE ASENTAMIENTO / DETALLES DE POZO -->
+
+  <div class="header-container-horizontal">
+    <!-- BEGIN DETALLES MECANICOS DE POZO -->
+    <div class="expandable-seccion-dos">
+      <app-custom-shaya-header-blue-small
+        headerTitle="DETALLES MECANICOS DE POZO"
+      ></app-custom-shaya-header-blue-small>
+      <table class="responsive-table">
+        <thead>
+          <tr>
+            <th rowspan="2"></th>
+            <th>Tope MD<br /><span class="unit">ft</span></th>
+            <th>Fondo MD<br /><span class="unit">ft</span></th>
+            <th>OD<br /><span class="unit">in</span></th>
+            <th>ID<br /><span class="unit">in</span></th>
+            <th>Peso<br /><span class="unit">lb/ft</span></th>
+            <th>Drift<br /><span class="unit">in</span></th>
+            <th>Rosca<br /><span class="unit">tipo</span></th>
+            <th>Clase<br /><span class="unit">A/B</span></th>
+          </tr>
+        </thead>
+
+        <tbody
+          *ngIf="mechanicalDetails.length > 0"
+          cdkDropList
+          (cdkDropListDropped)="drop($event, mechanicalDetails)"
+        >
+          <tr *ngFor="let mechanicalRow of mechanicalDetails; let i = index" cdkDrag>
+            <td>{{ mechanicalRow.nameStandardElement }}</td>
+            <td>
+              <input
+                type="text"
+                class="editable-input highlight-input"
+                placeholder="Escriba aqui"
+                [(ngModel)]="mechanicalRow.topeMD"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="editable-input highlight-input"
+                placeholder="Escriba aqui"
+                [(ngModel)]="mechanicalRow.fondoMD"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="editable-input highlight-input"
+                placeholder="Escriba aqui"
+                [(ngModel)]="mechanicalRow.outerDiameter"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="editable-input highlight-input"
+                placeholder="Escriba aqui"
+                [(ngModel)]="mechanicalRow.innerDiameter"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="editable-input highlight-input"
+                placeholder="Escriba aqui"
+                [(ngModel)]="mechanicalRow.peso"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="editable-input highlight-input"
+                placeholder="Escriba aqui"
+                [(ngModel)]="mechanicalRow.drift"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="editable-input highlight-input"
+                placeholder="Escriba aqui"
+                [(ngModel)]="mechanicalRow.rosca"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="editable-input highlight-input"
+                placeholder="Escriba aqui"
+                [(ngModel)]="mechanicalRow.clase"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="dropdown">
+        <button (click)="toggleDropdown()">+</button>
+        <ul class="dropdown-menu" *ngIf="dropdownOpen">
+          <li (click)="addRowMechanicalDetails('Casing')">Casing</li>
+          <li (click)="addRowMechanicalDetails('Tubing')">Tubing</li>
+          <li (click)="addRowMechanicalDetails('Liner')">Liner</li>
+        </ul>
+        <button (click)="removeRow()">−</button>
+      </div>
+    </div>
+    <!-- END DETALLES MECANICOS DE POZO -->
+
+    <!-- BEGIN PROFUNDIDADES DE ASENTAMIENTO -->
+    <div class="expandable-seccion-dos">
+      <app-custom-shaya-header-blue-small
+        headerTitle="PROFUNDIDADES DE ASENTAMIENTO"
+      ></app-custom-shaya-header-blue-small>
+      <table class="responsive-table">
+        <thead>
+          <tr>
+            <th rowspan="2"></th>
+            <th>MD<br /><span class="unit">ft</span></th>
+            <th>TVD<br /><span class="unit">ft</span></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let profundidadRow of profundidadesAsentamiento">
+            <td>{{ profundidadRow.label }}</td>
+            <td>
+              <input
+                type="text"
+                class="editable-input highlight-input"
+                placeholder="Escriba aqui"
+                [(ngModel)]="profundidadRow.md"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="editable-input highlight-input"
+                placeholder="Escriba aqui"
+                [(ngModel)]="profundidadRow.tvd"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- END PROFUNDIDADES DE ASENTAMIENTO -->
+
+    <!-- BEGIN DETALLE DE POZO/VARIOS -->
+    <div class="expandable-seccion-dos">
+      <app-custom-shaya-header-blue-small
+        headerTitle="DETALLES DE POZO/VARIOS"
+      ></app-custom-shaya-header-blue-small>
+      <div class="header-container-horizontal">
+        <div class="vertical-space">
+          <table class="responsive-table">
+            <tbody>
+              <tr *ngFor="let detallesRow1 of detallesPozo1">
+                <td>{{ detallesRow1.label }}</td>
+                <td>
+                  <div class="input-container">
+                    <input
+                      type="text"
+                      class="editable-input highlight-input with-unit"
+                      placeholder="Escriba aqui"
+                      [(ngModel)]="detallesRow1.value"
+                    />
+                    <span class="unit-inside">{{ detallesRow1.unit }}</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="vertical-space">
+          <table class="responsive-table">
+            <tbody>
+              <tr *ngFor="let detallesRow2 of detallesPozo2">
+                <td>{{ detallesRow2.label }}</td>
+                <td>
+                  <div class="input-container">
+                    <input
+                      type="text"
+                      class="editable-input highlight-input with-unit"
+                      placeholder="Escriba aqui"
+                      [(ngModel)]="detallesRow2.value"
+                      [ngClass]="{ 'gray-input': detallesRow2.label === 'EMR' }"
+                      [readonly]="detallesRow2.label === 'EMR'"
+                    />
+                    <span class="unit-inside">{{ detallesRow2.unit }}</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- FIN DETALLES MECANICOS DE POZO / PROFUNDIDADES DE ASENTAMIENTO / DETALLES DE POZO -->
+
+  <!-- INICIO DETALLES EQUIPO DE SUBSUELO -->
+  <app-custom-shaya-header-blue-small
+    headerTitle="DETALLE EQUIPO DE SUBSUELO"
+  ></app-custom-shaya-header-blue-small>
+  <div class="header-container-horizontal">
+    <!-- ACCESORIOS DE TUBERIA -->
+    <div class="expandable-seccion-dos">
+      <div class="headerSectionSmall">
+        <h6>ACCESORIOS EN TUBERIA</h6>
+      </div>
+
+      <table class="responsive-table">
+        <tbody>
+          <tr *ngFor="let accesoriosTub of accesoriosTuberia">
+            <td>
+              {{ accesoriosTub.label }}
+              <select
+                *ngIf="getDropdownList(accesoriosTub.label)"
+                class="highlight-input"
+                [(ngModel)]="accesoriosTub.diameter"
+                [attr.aria-label]="'Seleccionar diámetro'"
+              >
+                <option
+                  *ngFor="let option of getDropdownList(accesoriosTub.label)"
+                  [value]="option.value"
+                >
+                  {{ option.value }}
+                </option>
+              </select>
+            </td>
+
+            <td>
+              <input
+                type="text"
+                class="editable-input highlight-input"
+                placeholder="."
+                [(ngModel)]="
+                  accesoriosTub.label === 'Tipo de Cabezal'
+                    ? accesoriosTub.brand
+                    : accesoriosTub.value
+                "
+                (ngModelChange)="
+                  accesoriosTub.label !== 'Tipo de Cabezal' ? (accesoriosTub.value = $event) : null
+                "
+                [ngClass]="{ 'gray-input': accesoriosTub.label === 'Tipo de Cabezal' }"
+                [readonly]="accesoriosTub.label === 'Tipo de Cabezal'"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!--DETALLE Y-TOOL-->
+    <div class="expandable-seccion-dos">
+      <div class="headerSectionSmall">
+        <h6>DETALLE Y-TOOL</h6>
+      </div>
+
+      <div class="header-container-horizontal">
+        <div class="vertical-space">
+          <table class="responsive-table">
+            <tbody>
+              <tr *ngFor="let detallesTool1 of detalleTool1">
+                <td>{{ detallesTool1.label }}</td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [readonly]="detallesTool1.label === 'Marca'"
+                    [ngClass]="{ 'gray-input': detallesTool1.label === 'Marca' }"
+                    [(ngModel)]="detallesTool1.value"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <br />
+
+        <div class="vertical-space">
+          <table class="responsive-table">
+            <tbody>
+              <tr *ngFor="let detallesTool2 of detalleTool2">
+                <td>{{ detallesTool2.label }}</td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [(ngModel)]="detallesTool2.value"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROTECTORES DE CABLE -->
+    <div class="expandable-seccion-dos">
+      <div class="headerSectionSmall">
+        <h6>PROTECTORES DE CABLE</h6>
+      </div>
+
+      <div class="protector-grid">
+        <div>Protectores de Cable de Potencia:</div>
+        <div class="content-box">
+          <p *ngFor="let protector of cableProtectors">
+            {{ protector.cantidad }} {{ protector.descripcion }}
+          </p>
+        </div>
+
+        <div>Protectolizers:</div>
+        <div class="content-box">
+          <!-- <p><input type="text" class="editable-input highlight-input" placeholder="-" [(ngModel)]="cableProtectoresData['protectolizers'].value" /></p> -->
+          <p *ngFor="let protectolizer of protectolizers">
+            {{ protectolizer.cantidad }} {{ protectolizer.descripcion }}
+          </p>
+        </div>
+
+        <div>Bandas:</div>
+        <div class="content-box">
+          <!-- <input type="text" class="editable-input highlight-input" placeholder="-" [(ngModel)]="cableProtectoresData['bandas'].value" /> -->
+          <p *ngFor="let banda of bandas">{{ banda.cantidad }} {{ banda.descripcion }}</p>
+        </div>
+
+        <div>Low Profile:</div>
+        <div class="content-box">
+          <!-- <input type="text" class="editable-input highlight-input" placeholder="-" [(ngModel)]="cableProtectoresData['lowprofile'].value" /> -->
+          <p *ngFor="let lowprofile of lowProfile">
+            {{ lowprofile.cantidad }} {{ lowprofile.descripcion }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- EQUIPOS ESPECIFICOS -->
+    <div class="expandable-seccion-dos">
+      <div class="headerSectionSmall">
+        <h6>EQUIPOS ESPECIFICOS PARA COMPLETACION ESPECIAL (INTELIGENTE / DUAL / PACKER)</h6>
+        <!-- <p class="subText">Inteligente / Dual / Packer</p> -->
+      </div>
+
+      <div class="header-container-horizontal">
+        <div class="vertical-space">
+          <table class="responsive-table">
+            <tbody>
+              <tr *ngFor="let equiposEspRow1 of equiposEspecificos1">
+                <td>{{ equiposEspRow1.label }}</td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [(ngModel)]="equiposEspRow1.value"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <br />
+
+        <div class="vertical-space">
+          <table class="responsive-table">
+            <tbody>
+              <tr *ngFor="let equiposEspRow2 of equiposEspecificos2">
+                <td>{{ equiposEspRow2.label }}</td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [(ngModel)]="equiposEspRow2.value"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- FIN DETALLES EQUIPO DE SUBSUELO -->
+
+  <!-- INICIO DOWNHOLE -->
+  <app-custom-shaya-header-blue-small headerTitle="DOWNHOLE"></app-custom-shaya-header-blue-small>
+  <br />
+
+  <ng-container *ngFor="let tabla of tablasCabezaDescarga">
+    <div class="header1 headerSectionSmallRight">
+      <h6>{{ tabla.seccion }}</h6>
+    </div>
+    <!-- <div class="header1 headerSectionSmallRight"><h6>CABEZA DE DESCARGA / DISCHARGE PRESSURE SUB</h6></div> -->
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th class="encabezado-elemento-downhole"></th>
+          <th class="col-inicio-4col">SERIE</th>
+          <th class="col-inicio-4col">TIPO</th>
+          <th class="col-inicio-4col">NO. SERIE</th>
+          <th class="col-inicio-4col">NO. PARTE</th>
+          <th
+            class="col-centro"
+            *ngFor="let header of orderAttrCabezaDescarga"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ header }}
+          </th>
+          <th class="col-final">CONDICION</th>
+          <th class="col-final">PROPIEDAD</th>
+          <th class="col-final">LONGITUD</th>
+          <th class="col-final">PROFUNDIDAD TOPE</th>
+          <!-- <th *ngFor="let header of tabla.headers">{{ header }}</th>
+          <th>LONGITUD</th>
+          <th>PROFUNDIDAD TOPE</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of tabla.rows">
+          <td class="encabezado-elemento-downhole">
+            <strong>{{ row.elemento }}</strong>
+          </td>
+          <td class="col-inicio-4col">{{ row.values['SERIE'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['TIPO'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['NO. SERIE'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['NO. PARTE'] }}</td>
+          <td
+            class="col-centro"
+            *ngFor="let header of orderAttrCabezaDescarga"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ row.values[header] || '' }}
+          </td>
+          <td class="col-final">{{ row.values['CONDICION'] }}</td>
+          <td class="col-final">{{ row.values['PROPIEDAD'] }}</td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <ng-container *ngFor="let tabla of tablas2">
+    <div class="header1 headerSectionSmallRight">
+      <h6>{{ tabla.seccion }}</h6>
+    </div>
+    <!-- <div></div> -->
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th class="encabezado-elemento-downhole"></th>
+
+          <th class="col-inicio-5col">SERIE</th>
+          <th class="col-inicio-5col">TIPO</th>
+          <th class="col-inicio-5col"># ETAPAS</th>
+          <th class="col-inicio-5col">NO. SERIE</th>
+          <th class="col-inicio-5col">NO. PARTE</th>
+
+          <th
+            class="col-centro"
+            *ngFor="let header of orderAttrBombas"
+            [ngClass]="{ 'descripcion-col': header === 'DESCRIPCION' }"
+            [hidden]="
+              [
+                'SERIE',
+                'TIPO',
+                '# ETAPAS',
+                'NO. SERIE',
+                'NO. PARTE',
+                'CONDICION',
+                'PROPIEDAD',
+              ].includes(header) || !tabla.headers.includes(header)
+            "
+          >
+            {{ header }}
+          </th>
+
+          <th class="col-final">CONDICION</th>
+          <th class="col-final">PROPIEDAD</th>
+          <th class="col-final">LONGITUD</th>
+          <th class="col-final">PROFUNDIDAD</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let row of tabla.rows">
+          <td class="encabezado-elemento-downhole">
+            <strong>{{ row.label }}</strong>
+          </td>
+
+          <td class="col-inicio-5col">
+            {{ tabla.headers.includes('SERIE') ? row.values['SERIE'] : '' }}
+          </td>
+          <td class="col-inicio-5col">
+            {{ tabla.headers.includes('TIPO') ? row.values['TIPO'] : '' }}
+          </td>
+          <td class="col-inicio-5col">
+            {{ tabla.headers.includes('# ETAPAS') ? row.values['# ETAPAS'] : '' }}
+          </td>
+          <td class="col-inicio-5col">
+            {{ tabla.headers.includes('NO. SERIE') ? row.values['NO. SERIE'] : '' }}
+          </td>
+          <td class="col-inicio-5col">
+            {{ tabla.headers.includes('NO. PARTE') ? row.values['NO. PARTE'] : '' }}
+          </td>
+
+          <td
+            class="col-centro"
+            *ngFor="let header of orderAttrBombas"
+            [ngClass]="{ 'descripcion-col': header === 'DESCRIPCION' }"
+            [hidden]="
+              [
+                'SERIE',
+                'TIPO',
+                '# ETAPAS',
+                'NO. SERIE',
+                'NO. PARTE',
+                'CONDICION',
+                'PROPIEDAD',
+              ].includes(header) || !tabla.headers.includes(header)
+            "
+          >
+            {{ row.values[header] || '' }}
+          </td>
+
+          <td class="col-final" *ngIf="tabla.headers.includes('CONDICION')">
+            {{ tabla.headers.includes('CONDICION') ? row.values['CONDICION'] : '' }}
+          </td>
+          <td class="col-final" *ngIf="tabla.headers.includes('PROPIEDAD')">
+            {{ tabla.headers.includes('PROPIEDAD') ? row.values['PROPIEDAD'] : '' }}
+          </td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <ng-container *ngFor="let tabla of tablasIntkSepGas">
+    <div class="header1 headerSectionSmallRight">
+      <h6>{{ tabla.seccion }}</h6>
+    </div>
+    <!-- <div class="header1 headerSectionSmallRight"><h6>INTAKE / SEPARADORES DE GAS</h6></div> -->
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th class="encabezado-elemento-downhole"></th>
+          <th class="col-inicio-4col">SERIE</th>
+          <th class="col-inicio-4col">TIPO</th>
+          <th class="col-inicio-4col">NO. SERIE</th>
+          <th class="col-inicio-4col">NO. PARTE</th>
+
+          <th
+            class="col-centro"
+            *ngFor="let header of orderAttrIntkSepGas"
+            [ngClass]="{ 'descripcion-col': header === 'DESCRIPCION' }"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ header }}
+          </th>
+
+          <th class="col-final">CONDICION</th>
+          <th class="col-final">PROPIEDAD</th>
+          <th class="col-final">LONGITUD</th>
+          <th class="col-final">PROFUNDIDAD</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let row of tabla.rows">
+          <td class="encabezado-elemento-downhole">
+            <strong>{{ row.elemento }}</strong>
+          </td>
+          <td class="col-inicio-4col">{{ row.values['SERIE'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['TIPO'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['NO. SERIE'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['NO. PARTE'] }}</td>
+          <td
+            class="col-centro"
+            *ngFor="let header of orderAttrIntkSepGas"
+            [ngClass]="{ 'descripcion-col': header === 'DESCRIPCION' }"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ row.values[header] || '' }}
+          </td>
+          <td class="col-final">{{ row.values['CONDICION'] }}</td>
+          <td class="col-final">{{ row.values['PROPIEDAD'] }}</td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <ng-container *ngFor="let tabla of tablasProtectors">
+    <div class="header1 headerSectionSmallRight">
+      <h6>{{ tabla.seccion }}</h6>
+    </div>
+    <!-- <div class="header1 headerSectionSmallRight"><h6>PROTECTORES</h6></div> -->
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th class="encabezado-elemento-downhole"></th>
+          <th class="col-inicio-4col">SERIE</th>
+          <th class="col-inicio-4col">TIPO</th>
+          <th class="col-inicio-4col">NO. SERIE</th>
+          <th class="col-inicio-4col">NO. PARTE</th>
+
+          <th
+            class="col-centro"
+            *ngFor="let header of orderAttrIntkSepGas"
+            [ngClass]="{ 'descripcion-col': header === 'DESCRIPCION' }"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ header }}
+          </th>
+
+          <th class="col-final">CONDICION</th>
+          <th class="col-final">PROPIEDAD</th>
+          <th class="col-final">LONGITUD</th>
+          <th class="col-final">PROFUNDIDAD</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of tabla.rows">
+          <td class="encabezado-elemento-downhole">
+            <strong>{{ row.label }}</strong>
+          </td>
+          <td class="col-inicio-4col">{{ row.values['SERIE'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['TIPO'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['NO. SERIE'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['NO. PARTE'] }}</td>
+          <td
+            class="col-centro"
+            *ngFor="let header of orderAttrIntkSepGas"
+            [ngClass]="{ 'descripcion-col': header === 'DESCRIPCION' }"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ row.values[header] || '' }}
+          </td>
+          <td class="col-final">{{ row.values['CONDICION'] }}</td>
+          <td class="col-final">{{ row.values['PROPIEDAD'] }}</td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <ng-container *ngFor="let tabla of tablasMotors">
+    <div class="header1 headerSectionSmallRight">
+      <h6>{{ tabla.seccion }}</h6>
+    </div>
+    <!-- <div class="header1 headerSectionSmallRight"><h6>MOTORES</h6></div> -->
+    <div class="header-container-horizontal">
+      <table class="responsive-table">
+        <thead>
+          <tr>
+            <th class="encabezado-elemento-downhole"></th>
+            <th class="col-inicio-5col">SERIE</th>
+            <th class="col-inicio-5col">DESCRIPCION</th>
+            <th class="col-inicio-5col">W.C</th>
+            <th class="col-inicio-5col">NO. SERIE</th>
+            <th class="col-inicio-5col">NO. PARTE</th>
+
+            <th
+              class="col-centro"
+              *ngFor="let header of orderAttrMotor"
+              [hidden]="
+                [
+                  'SERIE',
+                  'DESCRIPCION',
+                  'W.C',
+                  'NO. SERIE',
+                  'NO. PARTE',
+                  'CONDICION',
+                  'PROPIEDAD',
+                ].includes(header) || !tabla.headers.includes(header)
+              "
+            >
+              {{ header }}
+            </th>
+
+            <th class="col-final">CONDICION</th>
+            <th class="col-final">PROPIEDAD</th>
+            <th class="col-final">LONGITUD</th>
+            <th class="col-final">PROFUNDIDAD</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let row of tabla.rows">
+            <td class="encabezado-elemento-downhole">
+              <strong>{{ row.elemento }}</strong>
+            </td>
+
+            <td class="col-inicio-5col">{{ row.values['SERIE'] }}</td>
+            <td class="col-inicio-5col">{{ row.values['DESCRIPCION'] }}</td>
+            <td class="col-inicio-5col">
+              {{ tabla.headers.includes('W.C') ? row.values['W.C'] : '' }}
+            </td>
+            <td class="col-inicio-5col">{{ row.values['NO. SERIE'] }}</td>
+            <td class="col-inicio-5col">{{ row.values['NO. PARTE'] }}</td>
+
+            <td
+              class="col-centro"
+              *ngFor="let header of orderAttrMotor"
+              [hidden]="
+                [
+                  'SERIE',
+                  'DESCRIPCION',
+                  'W.C',
+                  'NO. SERIE',
+                  'NO. PARTE',
+                  'CONDICION',
+                  'PROPIEDAD',
+                ].includes(header) || !tabla.headers.includes(header)
+              "
+            >
+              {{ row.values[header] || '' }}
+            </td>
+
+            <td class="col-final" *ngIf="tabla.headers.includes('CONDICION')">
+              {{ row.values['CONDICION'] }}
+            </td>
+            <td class="col-final" *ngIf="tabla.headers.includes('PROPIEDAD')">
+              {{ row.values['PROPIEDAD'] }}
+            </td>
+            <td class="col-final">
+              <input type="text" class="editable-input highlight-input" placeholder="-" />
+            </td>
+            <td class="col-final">
+              <input type="text" class="editable-input highlight-input" placeholder="-" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+  <ng-container *ngFor="let tabla of tablasSensors">
+    <div class="header1 headerSectionSmallRight">
+      <h6>{{ tabla.seccion }}</h6>
+    </div>
+    <!-- <div class="header1 headerSectionSmallRight"><h6>SENSOR / ADICIONALES DE SENSOR TIPO 1 / CENTRALIZADOR</h6></div> -->
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th class="encabezado-elemento-downhole"></th>
+          <th class="col-inicio-4col">SERIE</th>
+          <th class="col-inicio-4col">TIPO</th>
+          <th class="col-inicio-4col">NO. SERIE</th>
+          <th class="col-inicio-4col">NO. PARTE</th>
+          <th
+            class="col-centro"
+            *ngFor="let header of orderAttrSensorsTransferline"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ header }}
+          </th>
+          <th class="col-final">CONDICION</th>
+          <th class="col-final">PROPIEDAD</th>
+          <th class="col-final">LONGITUD</th>
+          <th class="col-final">PROFUNDIDAD</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let row of tabla.rows">
+          <td class="encabezado-elemento-downhole">
+            <strong>{{ row.elemento }}</strong>
+          </td>
+          <td class="col-inicio-4col">
+            {{ tabla.headers.includes('SERIE') ? row.values['SERIE'] : '' }}
+          </td>
+          <td class="col-inicio-4col">
+            {{ tabla.headers.includes('TIPO') ? row.values['TIPO'] : '' }}
+          </td>
+          <td class="col-inicio-4col">
+            {{ tabla.headers.includes('NO. SERIE') ? row.values['NO. SERIE'] : '' }}
+          </td>
+          <td class="col-inicio-4col">
+            {{ tabla.headers.includes('NO. PARTE') ? row.values['NO. PARTE'] : '' }}
+          </td>
+          <td
+            class="col-centro"
+            *ngFor="let header of orderAttrSensorsTransferline"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ row.values[header] || '' }}
+          </td>
+          <td class="col-final">
+            {{ tabla.headers.includes('CONDICION') ? row.values['CONDICION'] : '' }}
+          </td>
+          <td class="col-final">
+            {{ tabla.headers.includes('PROPIEDAD') ? row.values['PROPIEDAD'] : '' }}
+          </td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <!-- Transferline nuevas filas -->
+  <ng-container *ngFor="let tabla of tablasTransferline">
+    <div class="header1 headerSectionSmallRight">
+      <h6>{{ tabla.seccion }}</h6>
+    </div>
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th class="encabezado-elemento-downhole"></th>
+          <th class="col-inicio-4col">SERIE</th>
+          <th class="col-inicio-4col">TIPO</th>
+          <th class="col-inicio-4col">NO. SERIE</th>
+          <th class="col-inicio-4col">NO. PARTE</th>
+          <th
+            class="col-centro"
+            *ngFor="let header of orderAttrSensorsTransferline"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ header }}
+          </th>
+          <th class="col-final">CONDICION</th>
+          <th class="col-final">PROPIEDAD</th>
+          <th class="col-final">LONGITUD</th>
+          <th class="col-final">CARRETO</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let row of tabla.rows">
+          <td class="encabezado-elemento-downhole">
+            <strong>{{ row.elemento }}</strong>
+          </td>
+          <td class="col-inicio-4col">
+            {{ tabla.headers.includes('SERIE') ? row.values['SERIE'] : '' }}
+          </td>
+          <td class="col-inicio-4col">
+            {{ tabla.headers.includes('TIPO') ? row.values['TIPO'] : '' }}
+          </td>
+          <td class="col-inicio-4col">
+            {{ tabla.headers.includes('NO. SERIE') ? row.values['NO. SERIE'] : '' }}
+          </td>
+          <td class="col-inicio-4col">
+            {{ tabla.headers.includes('NO. PARTE') ? row.values['NO. PARTE'] : '' }}
+          </td>
+          <td
+            class="col-centro"
+            *ngFor="let header of orderAttrSensorsTransferline"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ row.values[header] || '' }}
+          </td>
+          <td class="col-final">
+            {{ tabla.headers.includes('CONDICION') ? row.values['CONDICION'] : '' }}
+          </td>
+          <td class="col-final">
+            {{ tabla.headers.includes('PROPIEDAD') ? row.values['PROPIEDAD'] : '' }}
+          </td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+        </tr>
+
+        <!-- FILAS TEMPORALES EDITABLES -->
+        <tr *ngFor="let fila of tabla.rowsTemporales; let i = index">
+          <td class="encabezado-elemento-downhole">
+            <!-- <input type="text" [(ngModel)]="fila.elemento" placeholder="Elemento" class="editable-input highlight-input" /> -->
+            <select
+              id="selectorTranferlineElements"
+              [(ngModel)]="fila.elemento"
+              class="editable-input highlight-input"
+            >
+              <option *ngFor="let elem of standardElementGroupsTranferline" [value]="elem.name">
+                {{ elem.name }}
+              </option>
+            </select>
+          </td>
+          <td class="col-inicio-4col">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['SERIE']"
+              placeholder="SERIE"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td class="col-inicio-4col">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['TIPO']"
+              placeholder="TIPO"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td class="col-inicio-4col">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['NO. SERIE']"
+              placeholder="NO. SERIE"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td class="col-inicio-4col">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['NO. PARTE']"
+              placeholder="NO. PARTE"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td
+            class="col-centro"
+            *ngFor="let header of orderAttrSensorsTransferline"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            <input
+              type="text"
+              [(ngModel)]="fila.values[header]"
+              [placeholder]="header"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td class="col-final">
+            <!-- <input type="text" [(ngModel)]="fila.values['CONDICION']" placeholder="CONDICION" class="editable-input highlight-input" /> -->
+            <select [(ngModel)]="fila.values['CONDICION']" class="editable-input highlight-input">
+              <option value="nuevo">NUEVO</option>
+              <option value="inspeccionado">INSPECCIONADO</option>
+              <option value="inspeccionado-rep">INSPECCIONADO-REPARADO</option>
+              <option value="reutilizado">REUTILIZADO</option>
+              <option value="reparado">REPARADO</option>
+            </select>
+          </td>
+          <td class="col-final">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['PROPIEDAD']"
+              placeholder="PROPIEDAD"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td class="col-final">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['LONGITUD']"
+              placeholder="LONGITUD"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td class="col-final">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['CARRETO']"
+              placeholder="CARRETO"
+              class="editable-input highlight-input"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="my-2">
+      <button type="button" (click)="agregarFilaTemporal(tabla)">+ Agregar fila</button>
+      <button type="button" (click)="eliminarUltimaFilaTemporal(tabla)">- Eliminar fila</button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngFor="let tabla of tablasCable">
+    <!-- <div class="header1 headerSectionSmallRight"><h6>CABLE / EXTENSIONES DE MOTOR</h6></div> -->
+    <div class="header1 headerSectionSmallRight">
+      <h6>{{ tabla.seccion }}</h6>
+    </div>
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th class="encabezado-elemento-downhole"></th>
+
+          <th class="col-inicio-4col">TIPO</th>
+          <th class="col-inicio-4col">DESCRIPCION</th>
+          <th class="col-inicio-4col">NO. SERIE</th>
+          <th class="col-inicio-4col">NO. PARTE</th>
+          <th
+            class="col-centro"
+            *ngFor="let header of orderAttrCable"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ header }}
+          </th>
+          <th class="col-final">CONDICION</th>
+          <th class="col-final">PROPIEDAD</th>
+          <th class="col-final">LONGITUD</th>
+          <th class="col-final">CARRETO</th>
+        </tr>
+      </thead>
+
+      <!-- <tbody>
+        <tr *ngFor="let row of tabla.rows">
+          <td class="encabezado-elemento-downhole">
+            <strong>{{ row.elemento }}</strong>
+          </td>
+          <td class="col-inicio-4col">{{ row.values['TIPO'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['DESCRIPCION'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['NO. SERIE'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['NO. PARTE'] }}</td>
+          <td
+            class="col-centro"
+            *ngFor="let header of orderAttrCable"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ row.values[header] || '' }}
+          </td>
+          <td class="col-final">{{ row.values['CONDICION'] }}</td>
+          <td class="col-final">{{ row.values['PROPIEDAD'] }}</td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+          <td class="col-final">
+            <input type="text" class="editable-input highlight-input" placeholder="-" />
+          </td>
+        </tr>
+      </tbody> -->
+      <tbody>
+        <!-- Fila de datos original del backend -->
+        <tr *ngFor="let row of tabla.rows">
+          <td class="encabezado-elemento-downhole">
+            <strong>{{ row.elemento }}</strong>
+          </td>
+          <td class="col-inicio-4col">{{ row.values['TIPO'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['DESCRIPCION'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['NO. SERIE'] }}</td>
+          <td class="col-inicio-4col">{{ row.values['NO. PARTE'] }}</td>
+          <td
+            class="col-centro"
+            *ngFor="let header of orderAttrCable"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            {{ row.values[header] || '' }}
+          </td>
+          <td class="col-final">{{ row.values['CONDICION'] }}</td>
+          <td class="col-final">{{ row.values['PROPIEDAD'] }}</td>
+          <td class="col-final">
+            <input class="editable-input highlight-input" type="text" placeholder="-" />
+          </td>
+          <td class="col-final">
+            <input class="editable-input highlight-input" type="text" placeholder="-" />
+          </td>
+        </tr>
+
+        <!-- Fila editable dinámica agregada por el usuario-->
+        <tr *ngFor="let fila of tabla.rowsTemporales; let i = index">
+          <td class="encabezado-elemento-downhole">
+            <select
+              id="selectorTranferlineElements"
+              [(ngModel)]="fila.elemento"
+              class="editable-input highlight-input"
+            >
+              <option *ngFor="let elem of standardElementGroupsCable" [value]="elem.name">
+                {{ elem.name }}
+              </option>
+            </select>
+          </td>
+          <td class="col-inicio-4col">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['TIPO']"
+              placeholder="TIPO"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td class="col-inicio-4col">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['DESCRIPCION']"
+              placeholder="DESCRIPCION"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td class="col-inicio-4col">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['NO. SERIE']"
+              placeholder="NO. SERIE"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td class="col-inicio-4col">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['NO. PARTE']"
+              placeholder="NO. PARTE"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td
+            class="col-centro"
+            *ngFor="let header of orderAttrCable"
+            [hidden]="
+              ['SERIE', 'TIPO', 'NO. SERIE', 'NO. PARTE', 'CONDICION', 'PROPIEDAD'].includes(
+                header
+              ) || !tabla.headers.includes(header)
+            "
+          >
+            <input
+              type="text"
+              [(ngModel)]="fila.values[header]"
+              [placeholder]="header"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <!-- <td class="col-final">
+            <input type="text" [(ngModel)]="fila.values['CONDICION']" placeholder="CONDICION" class="editable-input highlight-input"/>
+          </td> -->
+          <td class="col-final">
+            <!-- <input type="text" [(ngModel)]="fila.values['CONDICION']" placeholder="CONDICION" class="editable-input highlight-input" /> -->
+            <select [(ngModel)]="fila.values['CONDICION']" class="editable-input highlight-input">
+              <option value="nuevo">NUEVO</option>
+              <option value="inspeccionado">INSPECCIONADO</option>
+              <option value="inspeccionado-rep">INSPECCIONADO-REPARADO</option>
+              <option value="reutilizado">REUTILIZADO</option>
+              <option value="reparado">REPARADO</option>
+            </select>
+          </td>
+          <td class="col-final">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['PROPIEDAD']"
+              placeholder="PROPIEDAD"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td class="col-final">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['LONGITUD']"
+              placeholder="LONGITUD"
+              class="editable-input highlight-input"
+            />
+          </td>
+          <td class="col-final">
+            <input
+              type="text"
+              [(ngModel)]="fila.values['CARRETO']"
+              placeholder="CARRETO"
+              class="editable-input highlight-input"
+            />
+          </td>
+        </tr>
+      </tbody>
+      <!-- <button type="button" (click)="agregarFilaTemporal(tabla)">+ Agregar fila</button>
+      <button type="button" (click)="eliminarUltimaFilaTemporal(tabla)">- Eliminar fila</button> -->
+    </table>
+  </ng-container>
+
+  <!-- Encabezados con estructura espcial -->
+  <div class="main-grid">
+    <div class="col-left">
+      <div *ngFor="let headerDownHole of specialHeaderDownholeLeft">
+        <div class="header1 headerSectionSmallRight">
+          <h6>{{ headerDownHole.nameStandardGroup }}</h6>
+        </div>
+
+        <div *ngIf="headerDownHole.nameStandardGroup === 'PENETRADOR Y CONECTORES EN COLGADOR'">
+          <div class="header-container-horizontal">
+            <div class="vertical-space">
+              <div *ngFor="let tabla of tablasPenetrador">
+                <table class="responsive-table">
+                  <thead>
+                    <tr>
+                      <th class="encabezado-elemento-downhole-especial"></th>
+                      <th *ngFor="let header of tabla.headers">{{ header }}</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let row of tabla.rows">
+                    <td>
+                      <strong>{{ row.elemento }}</strong>
+                    </td>
+                    <td *ngFor="let header of tabla.headers">{{ row.values[header] || '' }}</td>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="vertical-space">
+              <table class="responsive-table">
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let parametrosPenetradorColgadorEstatico of parametrosPenetradorColgadorEstatico
+                    "
+                  >
+                    <td>{{ parametrosPenetradorColgadorEstatico.label }}</td>
+                    <td>
+                      <input
+                        type="text"
+                        class="editable-input highlight-input"
+                        placeholder="-"
+                        [(ngModel)]="parametrosPenetradorColgadorEstatico.value"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="headerDownHole.nameStandardGroup === 'PARAMETROS ESTATICOS DEL SENSOR Y ARRANQUE'"
+        >
+          <table class="responsive-table">
+            <thead>
+              <tr>
+                <th class="encabezado-elemento-downhole-paramEstatic"></th>
+                <th>Prueba</th>
+                <th>Pi<br /><span class="unit">psi</span></th>
+                <th>Pd<br /><span class="unit">psi</span></th>
+                <th>Ti<br /><span class="unit">°F</span></th>
+                <th>Tm<br /><span class="unit">°F</span></th>
+
+                <th>F-F<br /><span class="unit">Ω</span></th>
+                <th>F-T<br /><span class="unit">Ω</span></th>
+
+                <th>Amp</th>
+                <th>Hz<br /><span class="unit">Hz</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let parametrosSensorRow of parametrosSensor; let i = index">
+                <td *ngIf="i === 0" rowspan="3">Megada</td>
+                <td *ngIf="i === 3" rowspan="4">Arranque</td>
+                <td>{{ parametrosSensorRow.label }}</td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [(ngModel)]="parametrosSensorRow.pi"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [(ngModel)]="parametrosSensorRow.pd"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [(ngModel)]="parametrosSensorRow.ti"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [(ngModel)]="parametrosSensorRow.tm"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [(ngModel)]="parametrosSensorRow.ff"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [(ngModel)]="parametrosSensorRow.ft"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [(ngModel)]="parametrosSensorRow.amp"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="editable-input highlight-input"
+                    placeholder="-"
+                    [(ngModel)]="parametrosSensorRow.hz"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div *ngFor="let headerDownholeR of specialHeaderDownholeRight">
+        <div
+          class="headerSectionSmallRight"
+          [ngClass]="getHeaderDownholeClass(headerDownholeR.nameStandardGroup)"
+        >
+          <h6>{{ headerDownholeR.nameStandardGroup }}</h6>
+        </div>
+        <div *ngIf="headerDownholeR.nameStandardGroup === 'EQUIPO DE SUPERFICIE'">
+          <div class="header-container-horizontal">
+            <div class="vertical-space">
+              <table class="responsive-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>GENSET/TABLERO DIST<br /></th>
+                    <th>SDT/SHIFT<br /></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let equipoSuperficieRow1 of equipoSuperficie1">
+                    <td>{{ equipoSuperficieRow1.label }}</td>
+                    <td>
+                      <input
+                        type="text"
+                        class="editable-input highlight-input"
+                        placeholder="-"
+                        [(ngModel)]="equipoSuperficieRow1.genset"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        class="editable-input highlight-input"
+                        placeholder="-"
+                        [(ngModel)]="equipoSuperficieRow1.sot"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- <br /> -->
+            <div class="vertical-space">
+              <table class="responsive-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>VSD<br /></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let equipoSuperficieRow2 of equipoSuperficie2">
+                    <td>{{ equipoSuperficieRow2.label }}</td>
+                    <td>
+                      <input
+                        type="text"
+                        class="editable-input highlight-input"
+                        placeholder="-"
+                        [(ngModel)]="equipoSuperficieRow2.vsd"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="vertical-space">
+              <table class="responsive-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>SUT<br /></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let equipoSuperficieRow3 of equipoSuperficie3">
+                    <td>{{ equipoSuperficieRow3.label }}</td>
+                    <td>
+                      <input
+                        type="text"
+                        class="editable-input highlight-input"
+                        placeholder="-"
+                        [(ngModel)]="equipoSuperficieRow3.sut"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="headerDownholeR.nameStandardGroup === 'PARAMETROS DEL VARIADOR Y TRANSFORMADOR'"
+        >
+          <div class="header-container-horizontal">
+            <div class="vertical-space">
+              <table class="responsive-table">
+                <tbody></tbody>
+                <tbody>
+                  <tr *ngFor="let parametrosVariadorRow1 of parametrosVariador1">
+                    <td>{{ parametrosVariadorRow1.label }}</td>
+                    <td>
+                      <input
+                        type="text"
+                        class="editable-input highlight-input"
+                        placeholder="-"
+                        [(ngModel)]="parametrosVariadorRow1.value"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <br />
+
+            <div class="vertical-space">
+              <table class="responsive-table">
+                <tbody>
+                  <tr *ngFor="let parametrosVariadorRow2 of parametrosVariador2">
+                    <td>{{ parametrosVariadorRow2.label }}</td>
+                    <td>
+                      <input
+                        type="text"
+                        class="editable-input highlight-input"
+                        placeholder="-"
+                        [(ngModel)]="parametrosVariadorRow2.value"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="vertical-space">
+              <table class="responsive-table">
+                <tbody>
+                  <tr *ngFor="let parametrosVariadorRow3 of parametrosVariador3">
+                    <td>{{ parametrosVariadorRow3.label }}</td>
+                    <td>
+                      <input
+                        type="text"
+                        class="editable-input highlight-input"
+                        placeholder="-"
+                        [(ngModel)]="parametrosVariadorRow3.value"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h6>OBSERVACIONES</h6>
+  <!-- <app-custom-shaya-header-blue-small headerTitle="OBSERVACIONES"></app-custom-shaya-header-blue-small> -->
+  <textarea
+    class="text-area highlight-input"
+    rows="4"
+    cols="50"
+    placeholder="Escriba aqui"
+    [(ngModel)]="observaciones"
+  ></textarea>
+
+  <!-- Begin Firmas -->
+  <div class="signatures-section">
+    <p><strong>Revisado por:</strong></p>
+    <div class="signature-row">
+      <app-signature-box signatureRole="Especialista de Campo"></app-signature-box>
+      <app-signature-box signatureRole="Company Man"></app-signature-box>
+      <app-signature-box signatureRole="Representante del Cliente"></app-signature-box>
+    </div>
+  </div>
+  <!-- End Firmas -->
+</div>
+
+<div id="RigTimeReport">
+  <app-custom-shaya-header headerTitle="RIG TIME"></app-custom-shaya-header>
+
+  <!--ENCABEZADO DE REPORTE-->
+  <div class="header">
+    <div class="header-image">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/d/d6/SLB_Logo_2022.svg"
+        alt="SLB logo"
+      />
+    </div>
+    <div class="header-text">
+      <h6>Artificial Lift</h6>
+      <h5>REPORTE DE INSTALACION - EQUIPO ELECTROSUMERGIBLE</h5>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="grid-container">
+      <div class="grid-item"><label for="clienteRigInput">Cliente:</label></div>
+      <input
+        id="clienteRigInput"
+        type="text"
+        [placeholder]="infoDataOperationDetails.client"
+        class="highlight-input"
+        [(ngModel)]="headerRig.cliente"
+      />
+      <div class="grid-item"><label for="pozoRigInput">Pozo:</label></div>
+      <input
+        id="pozoRigInput"
+        type="text"
+        class="custom-input"
+        [placeholder]="infoDataOperationDetails.wellShortName"
+        readonly
+      />
+    </div>
+
+    <div class="grid-container">
+      <div class="grid-item"><label for="liderInstRigInput">Lider Instalacion:</label></div>
+      <input
+        id="liderInstRigInput"
+        type="text"
+        [placeholder]="infoDataRunBes.liderinstalacion"
+        class="highlight-input"
+        [(ngModel)]="headerRig.liderInstalacion"
+      />
+      <div class="grid-item">Campo:</div>
+      <input
+        type="text"
+        class="custom-input"
+        [(ngModel)]="infoDataOperationDetails.field"
+        placeholder="."
+        readonly
+      />
+    </div>
+
+    <div class="grid-container">
+      <div class="grid-item">Rig:</div>
+      <input
+        type="text"
+        class="custom-input"
+        [(ngModel)]="infoDataOperationDetails.rigName"
+        placeholder="."
+        readonly
+      />
+      <div class="grid-item">Representante Cliente:</div>
+      <input
+        type="text"
+        placeholder="Nombre Representante Cliente"
+        class="highlight-input"
+        [(ngModel)]="infoDataRunBes.companyman"
+      />
+    </div>
+  </div>
+
+  <div class="container-rig">
+    <table class="custom-table-rig">
+      <thead>
+        <tr>
+          <th colspan="2" class="blue-header-rig rig-time-group">Rig Time</th>
+          <th rowspan="2" class="blue-header-rig detail">Detalle</th>
+          <th rowspan="2" class="blue-header-rig time">Tiempo</th>
+          <th rowspan="2" class="blue-header-rig actionsRig"></th>
+        </tr>
+        <tr>
+          <th class="blue-header-rig rig-time">Fecha/Hora (Inicio)</th>
+          <th class="blue-header-rig rig-time">Fecha/Hora (Fin)</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let row of rowsRigTime; let i = index">
+          <!-- Fecha y Hora de Inicio -->
+          <td>
+            <input
+              type="datetime-local"
+              [(ngModel)]="row.fechaHoraInicio"
+              (change)="validateRowTime(i)"
+              placeholder="Selecciona fecha/hora de Inicio"
+              class="highlight-input"
+            />
+          </td>
+          <!-- Fecha y Hora de Final -->
+          <td>
+            <input
+              type="datetime-local"
+              [(ngModel)]="row.fechaHoraFin"
+              (change)="validateRowTime(i)"
+              placeholder="Selecciona fecha/hora de Fin"
+              class="highlight-input"
+            />
+          </td>
+          <!-- Detalle -->
+          <td class="detalle-cell">
+            <input
+              type="text"
+              [(ngModel)]="row.detalle"
+              placeholder="Escribe el detalle"
+              class="detalle-input highlight-input"
+            />
+          </td>
+
+          <!-- Tiempo calculado -->
+          <td>{{ calculateTimeFormatted(row.fechaHoraInicio, row.fechaHoraFin) }}</td>
+
+          <td>
+            <button (click)="addRowRigTime(i)">+</button>
+            <button (click)="deleteRowRigTime(i)">-</button>
+          </td>
+        </tr>
+      </tbody>
+
+      <!-- Fila de total -->
+      <tfoot>
+        <tr>
+          <td colspan="3" class="foot">Total Tiempo</td>
+          <td>{{ getTotalDuration() }}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <table class="table-date-hour-work">
+    <tr>
+      <td class="blue-header-rig">Arribo a la locacion a:</td>
+    </tr>
+    <tr>
+      <input
+        type="datetime-local"
+        [(ngModel)]="workInformation.fechaHoraArriboLocacion"
+        placeholder="Selecciona fecha/hora de Inicio"
+        class="highlight-input"
+      />
+    </tr>
+    <tr>
+      <td class="blue-header-rig">Inicio de Trabajo</td>
+    </tr>
+    <tr>
+      <td [(ngModel)]="workInformation.fechaHoraInicioTrabajo">{{minStart()}}</td>
+      <!-- <input
+        type="datetime-local"
+        [(ngModel)]="workInformation.fechaHoraInicioTrabajo"
+        placeholder="Selecciona fecha/hora de Inicio"
+        class="highlight-input"
+      /> -->
+    </tr>
+    <tr>
+      <td class="blue-header-rig">Fin de Trabajo</td>
+    </tr>
+    <tr>
+      <td [(ngModel)]="workInformation.fechaHoraFinTrabajo">{{maxEnd}}</td>
+      <!-- <input
+        type="datetime-local"
+        [(ngModel)]="workInformation.fechaHoraFinTrabajo"
+        placeholder="Selecciona fecha/hora de Inicio"
+        class="highlight-input"
+      /> -->
+    </tr>
+  </table>
+
+  <!-- Begin Firmas -->
+  <div class="signatures-section">
+    <p><strong>Comentarios:</strong></p>
+    <div class="signature-row">
+      <app-signature-box signatureRole="Especialista de Campo"></app-signature-box>
+      <app-signature-box signatureRole="Company Man"></app-signature-box>
+      <app-signature-box signatureRole="Representante del Cliente"></app-signature-box>
+    </div>
+  </div>
+</div>
+<!-- End Firmas -->
+<br />
+<br />
+
+<app-generic-request-page
+  #genericLoadRunBes
+  [confirmButtonText]="'Enviar RUN BES a revision'"
+  [cancelButtonText]="'Rechazar'"
+  [title]="'RUN BES'"
+  (confirmAction)="testNotFunction()"
+>
+  <app-field-button
+    *ngIf="this.btnFirstFileDownload"
+    label="Descargar Archivo .pdf"
+    (click)="descargarPDFMultiple(['RunBesInstalationReport', 'RigTimeReport'])"
+  >
+  </app-field-button>
+  <!-- <app-field-button *ngIf="this.uploadXslRunBes" label="Descargar Reporte .xlsx" (click)="this.showFile()">
+  </app-field-button> -->
+  <app-field-button
+    *ngIf="!this.btnFirstFileDownload"
+    label="Descargar Archivo Firmado previo"
+    (click)="this.showFile()"
+  >
+  </app-field-button>
+
+  <div>
+    <app-button-upload
+      [label]="'Ingresa el documento del pozo actividad'"
+      [extension]="'application/pdf'"
+      [showIsRequired]="true"
+      [urlToSave]="urlToSave"
+      [paramsToSave]="{
+        idOilfieldOperations: this.idOilFieldOperationPath,
+        idStandardFileTypesOfOilfieldOperations: this.idFileSent,
+      }"
+    ></app-button-upload>
+  </div>
+</app-generic-request-page>

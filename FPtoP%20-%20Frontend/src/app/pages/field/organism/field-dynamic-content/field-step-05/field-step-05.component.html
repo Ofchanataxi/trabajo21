@@ -1,0 +1,60 @@
+<app-custom-shaya-header-icon headerIcon="list" headerTitle="Resumen de elementos que se quedaron en pozo">
+</app-custom-shaya-header-icon>
+<div class="field-search-button">
+<div class="container-active">
+  <div class="row filter-information">
+    <div class="column">
+      <div class="search">
+        <slb-search
+          [searchPlaceholder]="''"
+          [showAutocomplete]="true"
+          [searchItems]="searchingItems"
+          (change)="onSearchChangeTable1($event)"
+          (searching)="onSearch($event)"
+          (cleared)="onSearchClearTable1($event)"
+        ></slb-search>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<app-dynamic-table_05
+  [searchingItems]="searchingItems"
+  [groupedData]="groupedData"
+  [columnConfig]="columnConfig['table1']"
+  [searchTerm]="searchTermTable1">
+</app-dynamic-table_05>
+
+
+
+
+<app-custom-shaya-header headerTitle="Resumen de elementos que se van a devolver">
+</app-custom-shaya-header>
+<div class="field-search-button">
+<div class="container-active">
+  <div class="row filter-information">
+    <div class="column">
+      <div class="search">
+        <slb-search
+          [searchPlaceholder]="''"
+          [showAutocomplete]="true"
+          [searchItems]="searchingItems"
+          (change)="onSearchChangeTable2($event)"
+          (searching)="onSearch($event)"
+          (cleared)="onSearchClearTable2($event)"
+        ></slb-search>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<app-dynamic-table_05
+  [searchingItems]="searchingItems"
+  [groupedData]="groupedData"
+  [columnConfig]="columnConfig['table2']"
+  [searchTerm]="searchTermTable2">
+</app-dynamic-table_05>
+<div class="container-center">
+  <app-button (click)="generateFile()" label="Generar visualización previa de documentos"></app-button>
+</div>

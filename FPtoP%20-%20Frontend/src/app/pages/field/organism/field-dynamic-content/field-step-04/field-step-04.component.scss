@@ -1,0 +1,9 @@
+@import "src/app/pages/field/field.component.scss";
+
+.checkbox-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}

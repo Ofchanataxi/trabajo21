@@ -1,0 +1,9 @@
+@import "src/app/pages/field/field.component.scss";
+
+.container-center {
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  height: 100%;             
+  margin-top: 5px;
+}

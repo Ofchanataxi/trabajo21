@@ -1,0 +1,31 @@
+@import "src/themes/base/base-theme";
+@import '@slb-dls/angular-material/assets/styles/theming/dls-palette';
+@import "src/themes/light/variables";
+@import "src/app/pages/field/field.component.scss";
+
+.container-active {
+    display: flex;
+    justify-content: space-between;
+
+    .elements-container {
+      flex: 1;
+      margin: 0 0px;
+      &:first-child {
+        border-right: 3px solid  map-get($colors, shayaBlue);
+      }
+
+      &:last-child {
+        border-left: 3px solid  map-get($colors, shayaBlue);
+      }
+    }
+  }
+  .field-search-button {
+    margin-bottom: 10px!important;
+  }
+
+  .no-elements-message {
+    font-size: 16px;
+    color: #888;
+    text-align: center;
+    margin-top: 20px;
+  }

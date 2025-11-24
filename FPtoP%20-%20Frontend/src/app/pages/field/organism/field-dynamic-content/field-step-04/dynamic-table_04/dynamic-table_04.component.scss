@@ -1,0 +1,97 @@
+@import "src/themes/base/base-theme";
+@import '@slb-dls/angular-material/assets/styles/theming/dls-palette';
+@import "src/themes/light/variables";
+
+@include theme-base($dls-app-light-theme, $app-theme-config);
+
+.table-title {
+    background-color:map-get($colors, shayaGreen);
+    padding: 4px;
+    font-size: 1.2em;
+    text-align: center;  /* Center the text horizontally */
+    
+    margin: 0px;
+  }
+  .table-subtitle {
+    background-color:map-get($colors, shayaBlue);
+    padding: 4px;
+    font-size: 1.2em;
+    text-align: center;  /* Center the text horizontally */
+    color: white!important;
+    margin: 0px;
+  }
+  
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0px;
+  
+    thead {
+      background-color: map-get($colors, shayaSecond);
+      color: white;
+      text-align: center;
+  
+      th {
+        padding: 10px;
+      }
+    }
+  
+    tbody {
+      tr {
+        td {
+          padding: 10px;
+          border: 1px solid #ddd;
+          text-align: center;
+        }
+      }
+    }
+  }
+  
+  .custom-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 8px;
+    border: 0px solid #ddd;
+    text-align: 'center';
+  }
+
+  .number-column {
+    width: 100px; /* Adjust the width as needed */
+    text-align: right;
+  }
+
+  .text-column {
+    width: auto;
+    text-align: center;
+  }
+
+  .long-text-column {
+    width: 300px; /* Adjust the width as needed */
+    text-align: left;
+    word-wrap: break-word;
+  }
+}
+
+.button-container{
+  margin:1px;
+}
+
+
+.cdk-drag {
+  cursor: grab; 
+}
+
+.cdk-drag-dragging {
+  cursor: grabbing;
+  opacity: 0.8; 
+}
+
+.cdk-drag-placeholder {
+  visibility: hidden; 
+}
+.cdk-drop-list-dragging {
+  cursor: move;
+}
+
