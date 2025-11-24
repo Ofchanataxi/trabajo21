@@ -1,0 +1,119 @@
+@import "src/themes/base/base-theme";
+@import "@slb-dls/angular-material/assets/styles/theming/dls-palette";
+@import "src/themes/light/variables";
+
+@include theme-base($dls-app-light-theme, $app-theme-config);
+
+.container-is-valid-information {
+  padding: 10px;
+  border-radius: 20px;
+
+  .generalMessages {
+    padding: 10px;
+    display: flex;
+    border-top: solid 1px gray;
+    margin-top: 5px;
+    .error-icon {
+      .icon-invalid {
+        color: map-get($colors, shayaRed);
+      }
+    }
+    .generalErrorInformation {
+      ul {
+        margin: 0;
+        li {
+          p {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .header {
+    color: map-get($colors, shayaBlue);
+    p {
+      margin: 0 0 3px 0;
+    }
+  }
+
+  .signs-information {
+    .sign {
+      .annot {
+        color: map-get($colors, shayaRed);
+        font-size: 14px;
+        text-align: left;
+        display: flex;
+        border-top: 1px solid gray;
+        padding: 10px;
+        .annot-information {
+          .annotation-title {
+            padding-left: 24px;
+            color: map-get($colors, shayaRed);
+          }
+          ul {
+            margin: 0;
+            div {
+              li {
+                color: black;
+              }
+              display: flex;
+              gap: 10px;
+              color: black;
+            }
+          }
+        }
+      }
+      .valid-sign {
+        color: map-get($colors, shayaSecond);
+        font-size: 14px;
+        text-align: left;
+        display: flex;
+        border-top: 1px solid gray;
+        padding: 10px;
+        .sign-information {
+          ul {
+            margin: 0;
+            div {
+              li {
+                color: black;
+              }
+              display: flex;
+              gap: 10px;
+              color: black;
+            }
+          }
+        }
+      }
+      .invalid-sign {
+        color: map-get($colors, shayaRed);
+        font-size: 14px;
+        text-align: left;
+        display: flex;
+        border-top: 1px solid gray;
+        padding: 10px;
+        .sign-information {
+          ul {
+            margin: 0;
+            div {
+              li {
+                color: black;
+              }
+              display: flex;
+              gap: 10px;
+              color: black;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.invalid-sign-text {
+  color: map-get($colors, shayaRed);
+}
+
+.valid-sign-text {
+  color: map-get($colors, shayaSecond);
+}

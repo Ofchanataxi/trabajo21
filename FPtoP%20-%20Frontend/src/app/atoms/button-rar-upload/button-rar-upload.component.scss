@@ -1,0 +1,100 @@
+@import "src/themes/base/base-theme";
+@import "@slb-dls/angular-material/assets/styles/theming/dls-palette";
+@import "src/themes/light/variables";
+
+@include theme-base($dls-app-light-theme, $app-theme-config);
+
+.uploadDrop {
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 10px;
+  .uploadDropColumnFlexible {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 5px;
+    flex-grow: 1;
+  }
+  .uploadDropColumnClose {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 5px;
+    width: 25px;
+  }
+  .dls-dragzone-area-text {
+    width: 100%;
+  }
+  .dls-dragzone-area {
+    display: flex;
+    padding: 3px 10px;
+    margin: 0px;
+    height: auto !important;
+    .containerUploadButton {
+      display: flex;
+      width: 100%;
+      .columnUploadButtonStatic {
+        display: flex;
+        width: 48px;
+      }
+      .columnUploadButtonFlexible {
+        display: flex;
+        flex-direction: column;
+        padding: 0px 10px;
+        flex-grow: 1;
+        flex-wrap: wrap;
+        align-self: center;
+        .title {
+          font-weight: bold;
+        }
+        .containerNameFile {
+          margin: 0px;
+        }
+        .files {
+          .containerNameFile {
+            background-color: #d9d9d9;
+            margin: 5px 0px;
+            padding: 3px 10px;
+            border-radius: 5px;
+            mat-icon {
+              height: 12px !important;
+              width: 12px !important;
+              line-height: 12px !important;
+            }
+          }
+        }
+      }
+    }
+  }
+  button {
+    width: 45px !important;
+    height: 45px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    &:hover {
+      box-shadow: 0 3px 9px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    }
+    &.uploadButton {
+      background-color: map-get($colors, shayaBlue);
+      width: 33px !important;
+      height: 33px !important;
+      mat-icon {
+        width: 25px;
+        height: 25px;
+      }
+    }
+    &.cancelUploadButton {
+      background-color: map-get($colors, shayaRed);
+      width: 25px !important;
+      height: 25px !important;
+      margin-top: 5px;
+      mat-icon {
+        width: 15px;
+        height: 15px;
+      }
+    }
+  }
+}
+
+.dls-toast-body .dls-details {
+  word-break: break-all;
+}

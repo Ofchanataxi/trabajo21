@@ -1,0 +1,122 @@
+<div class="container-is-valid-information">
+  <div class="header">
+    <p>VERIFICACIÓN DE FIRMAS ELECTRÓNICAS</p>
+  </div>
+  <div class="generalMessages" *ngIf="docWithAnnots || docWithModifications">
+    <div class="error-icon">
+      <div class="icon-invalid" *ngIf="docWithAnnots || docWithModifications">
+        <mat-icon>close</mat-icon>
+      </div>
+    </div>
+    <div class="generalErrorInformation">
+      <ul>
+        <li *ngIf="docWithAnnots && !docWithModifications">
+          <p>
+            <b>{{ annots.generalMsg }}</b>
+          </p>
+        </li>
+      </ul>
+      <ul>
+        <li *ngIf="docWithModifications">
+          <p><b>El documento contiene modificaciones</b></p>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="signs-information">
+    <div class="sign" *ngFor="let data of sortedData">
+      <div *ngIf="data.sortType === 'sign'">
+        <div class="valid-sign" *ngIf="!data.signWithProblems">
+          <div class="sign-container">
+            <div class="icon-valid">
+              <mat-icon>check</mat-icon>
+            </div>
+          </div>
+          <div class="sign-information">
+            <ul>
+              <div>
+                <li><b> Nombres: </b></li>
+                {{ data.userData.Names }}
+              </div>
+              <div>
+                <li><b>Cédula:</b></li>
+                {{ data.userData.CI }}
+              </div>
+              <div>
+                <li><b>Fecha de Firma:</b></li>
+                {{ data.signingTime | dateCustomFormat }}
+              </div>
+              <div>
+                <li><b>Razón:</b></li>
+                {{ data.reason ? data.reason : 'No especificada' }}
+              </div>
+              <div>
+                <li><b>Firma:</b></li>
+                <span [ngClass]="{ 'valid-sign-text': !data.signWithProblems }">
+                  <b>{{ data.signWithProblems ? 'Inválida' : 'Válida' }}</b>
+                </span>
+              </div>
+            </ul>
+          </div>
+        </div>
+        <div class="invalid-sign" *ngIf="data.signWithProblems">
+          <div class="sign-container">
+            <div class="icon-valid">
+              <mat-icon>close</mat-icon>
+            </div>
+          </div>
+          <div class="sign-information">
+            <ul>
+              <div>
+                <li><b> Nombres: </b></li>
+                {{ data.userData.Names }}
+              </div>
+              <div>
+                <li><b>Cédula:</b></li>
+                {{ data.userData.CI }}
+              </div>
+              <div>
+                <li><b>Fecha de Firma:</b></li>
+                {{ data.signingTime | dateCustomFormat }}
+              </div>
+              <div>
+                <li><b>Razón:</b></li>
+                {{ data.reason ? data.reason : 'No especificada' }}
+              </div>
+              <div>
+                <li><b>Firma:</b></li>
+                <span [ngClass]="{ 'invalid-sign-text': data.signWithProblems }">
+                  <b>{{ data.signWithProblems ? 'Inválida' : 'Válida' }}</b>
+                </span>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="data.sortType !== 'sign' && docWithModifications === false">
+        <div class="annot">
+          <div class="icon-valid">
+            <mat-icon>close</mat-icon>
+          </div>
+          <div class="annot-information">
+            <b class="annotation-title">Anotación encontrada: </b>
+            <ul>
+              <div>
+                <li><b>Tipo: </b></li>
+                {{ data.type }}
+              </div>
+              <div>
+                <li><b>Creada por: </b></li>
+                {{ data.madeBY || 'No disponible' }}
+              </div>
+              <div>
+                <li><b>Fecha: </b></li>
+                {{ data.date ? (data.date | dateCustomFormat) : 'No disponible' }}
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

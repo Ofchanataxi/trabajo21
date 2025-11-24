@@ -1,0 +1,282 @@
+@import 'src/themes/base/base-theme';
+@import '@slb-dls/angular-material/assets/styles/theming/dls-palette';
+@import 'src/themes/light/variables';
+
+@include theme-base($dls-app-light-theme, $app-theme-config);
+
+.shared-dialog-container {
+  text-align: center;
+  align-items: center;
+
+  .shared-dialog-content {
+    color: white;
+
+    .zipFileShared {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .unzipFilesList-container {
+      padding: 20px 0;
+      text-align: center;
+
+      .file-list-header {
+        color: white;
+        font-weight: bold;
+        border-bottom: 2px solid #ffffffd2;
+        padding: 0 1rem 0.5rem 1rem;
+        margin-bottom: 0.5rem;
+        text-align: left;
+      }
+
+      .file-list-row {
+        padding: 0.75rem 0;
+        border-bottom: 2px solid #fcfcfc75;
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      .file-display-container {
+        position: relative;
+        width: 100%;
+        text-align: left;
+        word-break: break-word;
+        h3 {
+          text-align: center;
+        }
+
+        .file-info ::ng-deep .uploadDropDisable {
+          background-color: #576e9dc9;
+          border: none;
+        }
+
+        .toggle-mapping-button {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          z-index: 2;
+          background-color: rgba(255, 255, 255, 0.9);
+          color: #3f51b5;
+        }
+      }
+    }
+  }
+
+  .automap-summary {
+    margin-top: 16px;
+    padding: 16px;
+    h4 {
+      margin-top: 0;
+      font-weight: 500;
+    }
+  }
+
+  .automap-summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+
+    th, td {
+      border: 1px solid #e0e0e0;
+      padding: 8px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background-color: #576e9dc9;
+      font-weight: 500;
+    }
+
+    td:first-child {
+      width: 65%;
+    }
+  }
+
+  .automap-info-feedback {
+    align-items: center;
+    font-size: 16px;
+    margin-left: 16px;
+    mat-icon {
+      color: #93c2ee;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+    span {
+      margin-left: 8px;
+    }
+  }
+
+  .automap-feedback {
+    text-align: left;
+    align-items: stretch;
+    font-size: 16px;
+    margin-left: 16px;
+
+    &.success-feedback {
+      mat-icon.success {
+        color: #2cbb4e;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+
+      mat-icon.info {
+        color: #93c2ee;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+      span {
+        margin-left: 8px;
+      }
+    }
+    &.warning-feedback {
+      mat-icon {
+        color: #ff8f00;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+      span {
+        margin-left: 8px;
+      }
+    }
+  }
+
+  .map-files {
+    padding-top: 20px;
+    text-align: center;
+  }
+
+  .custom-dialog-actions {
+    position: fixed;
+    top: 0 !important;
+    right: 0 !important;
+    z-index: 1000;
+    padding: 10px 12px 0 0 !important;
+    text-align: center;
+    button {
+      border-radius: 50%;
+      background-color: map-get($colors, shayaRed);
+      color: white;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+    }
+  }
+
+  .mapping-section {
+    padding: 16px;
+    background-color: #576e9dc9;
+    animation: fadeIn 0.4s ease-in-out;
+    margin-top: 1rem;
+    border-radius: 4px;
+
+    h5 {
+      margin-top: 0;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .item-row {
+      text-align: left;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(238, 238, 238, 0.5);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      mat-form-field {
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
+
+    .mapping-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 24px;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 565px) {
+  .mapping-section .item-row {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+  .mapping-section .item-row > shared-well-description {
+    flex: 0 1 30%;
+  }
+
+  .mapping-section .item-row > mat-form-field {
+    flex: 1 1 70%;
+  }
+
+  .mapping-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .mapping-actions > button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .mapping-actions > app-button {
+    width: 100%;
+    display: block;
+
+    ::ng-deep button {
+      width: 100% !important;
+      box-sizing: border-box;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .automap-feedback {
+    margin-left: 0px !important;
+    &.success-feedback {
+      span {
+        margin-left: 4px;
+      }
+    }
+    &.warning-feedback {
+      span {
+        margin-left: 4px;
+      }
+    }
+  }
+  .automap-info-feedback {
+    margin-left: 8px;
+    span {
+      margin-left: 4px;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+.signature-box {
+  width: 300px; /* Ajustable */
+  text-align: center;
+  margin: 0 10px;
+}
+
+.long-line {
+  border-top: 1px solid #000;
+  margin: 0 auto 6px auto;
+  width: 100%;
+}
+
+.line-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.label {
+  flex: 1;
+  text-align: center;
+}
+
+.roleSignature {
+  font-size: 12px;
+  font-weight: bold;
+}

@@ -1,0 +1,21 @@
+.button-container {
+  display: flex;
+  justify-content: flex-end; // Alinea el contenido a la derecha
+}
+
+.custom-button {
+  background-color: white; // Color de fondo
+  color: #25457F; // Color del texto
+  padding: 10px; // Espaciado interno
+  text-align: center; // Alineación del texto
+  text-decoration: none; // Sin subrayado
+  display: inline-flex; // Elemento en línea y flex
+  align-items: center; // Centra el contenido verticalmente
+  justify-content: center; // Centra el contenido horizontalmente
+  font-size: 30px; // Tamaño de fuente
+  margin: 6px; // Margen
+  border-radius: 50%; // Bordes redondeados para hacer un círculo
+  width: 20px; // Ancho del círculo
+  height: 20px; // Altura del círculo
+  pointer-events: none; // Desactiva los eventos de clic
+}

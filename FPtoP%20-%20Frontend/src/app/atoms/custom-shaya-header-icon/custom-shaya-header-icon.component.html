@@ -1,0 +1,15 @@
+<div [ngClass]="errorTheme">
+
+  <div class="headerSection">
+    <div class="button-container">
+      <span class="custom-button">
+        <mat-icon class="clear-button" [svgIcon]="headerIcon"></mat-icon>
+      </span>
+    </div>
+    <slb-framework-page-header [pageTitle]="headerTitle">
+      <div class="buttonContainer">
+        <ng-content></ng-content>
+      </div>
+    </slb-framework-page-header>
+  </div>
+</div>

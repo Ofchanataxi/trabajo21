@@ -1,0 +1,76 @@
+<form [formGroup]="form">
+  <div class="dialog-container">
+    <div class="dialog-content">
+      <div class="item-information">
+        <shared-well-description
+          [oitInspection]="dialogData.item.oitInspection"
+          [oitReparation]="dialogData.item.oitReparation"
+          [name]="dialogData.item.pecDescription"
+          [condition]="dialogData.item.condition"
+          [elementID]="dialogData.item.id"
+          [serial]="dialogData.item.serial"
+          [partNumber]="dialogData.item.partNumber"
+        >
+        </shared-well-description>
+        <p><strong>CANTIDAD:</strong> {{ dialogData.item.quantity }}</p>
+      </div>
+      <div class="zipFiles">
+        <p>Archivo .zip seleccionado</p>
+        <app-button-rar-upload [files]="dialogData.zipFiles" [editDisabled]="true">
+        </app-button-rar-upload>
+      </div>
+      <div class="unzipFiles-container">
+        <p>Encontramos los siguientes archivos</p><br>
+        <div class="file-list-header">
+          <div><strong>Archivo</strong></div>
+          <div><strong>Selección de documento de soporte</strong></div>
+        </div>
+        <div formArrayName="files">
+          <div
+            class="file-list-row"
+            *ngFor="let file of filesFormArray.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <div class="file-display-container">
+              <ng-container *ngIf="formatFilePathAndName(file.value.name) as fileInfo">
+                <app-button-upload
+                  class="file-info"
+                  [label]="fileInfo.fileName"
+                  [extension]="file.value.metadata.type"
+                  [initialFiles]="createInitialFile(file.value.metadata)"
+                  [editDisabled]="true"
+                >
+                </app-button-upload>
+              </ng-container>
+            </div>
+            <div class="cell-selection">
+              <mat-form-field>
+                <mat-select
+                  formControlName="selectedOption"
+                  placeholder="Documentos de Soporte"
+                  (selectionChange)="selectedValue(i, $event)"
+                  [compareWith]="compareSelectedOptions"
+                >
+                  <mat-option *ngFor="let fileType of getAvailableOptionsForFile(i)" [value]="fileType">{{
+                    fileType.name
+                  }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="map-files">
+      <app-button
+        [label]="'Confirmar mapeo de información'"
+        (click)="sendFilesInformation()"
+      ></app-button>
+    </div>
+    <div class="custom-dialog-actions">
+      <button class="custom-close-button" (click)="closeDialogFromInside()">
+        <mat-icon svgIcon="close"></mat-icon>
+      </button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,30 @@
+<mat-form-field
+  slbFormField
+  [color]="color"
+  [size]="size"
+  [ngClass]="{ 'dls-readonly': readonly && !disabled }"
+>
+  <mat-label *ngIf="showLabel">
+    {{ label || placeholder }}
+  </mat-label>
+
+  <!-- ⬇️ OJO: aquí ya NO va [formControl]; usamos el estado del CVA -->
+  <mat-select
+    [required]="required"
+    [panelClass]="'dls-panel'"
+    [placeholder]="!showLabel ? placeholder : ''"
+    [disabled]="readonly || disabled"
+    [disableRipple]="disableRipple"
+    [disableOptionCentering]="disableOptionCentering"
+    [hideSingleSelectionIndicator]="true"
+    [value]="value"
+    (selectionChange)="onMatChange($event)"
+    (closed)="onBlur()"
+  >
+    <mat-option *ngFor="let option of options" [value]="getOptionValue(option)">
+      {{ getOptionLabel(option) }}
+    </mat-option>
+  </mat-select>
+
+  <mat-hint *ngIf="showHint">Hint: {{ hint }}</mat-hint>
+</mat-form-field>

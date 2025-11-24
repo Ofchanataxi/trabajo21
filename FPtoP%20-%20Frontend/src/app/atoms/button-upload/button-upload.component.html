@@ -1,0 +1,354 @@
+<div class="uploadDrop" *ngIf="!editDisabled">
+  <div class="uploadDropColumnFlexible">
+    <slb-dropzone
+      #dropzone
+      [dropzoneTemplate]="dropzoneTmpl"
+      [multiple]="multipleFile"
+      [accept]="extension"
+      (onFilesChange)="onFilesChange($event)"
+      [canRemoveAttachment]="false"
+      [showAttachedFiles]="false"
+    >
+      <ng-template #dropzoneTmpl>
+        <div class="containerUploadButton">
+          <div class="columnUploadButtonStatic" *ngIf="files.length === 0">
+            <button mat-fab class="uploadButton" type="button" (click)="({})">
+              <mat-icon>upload</mat-icon>
+            </button>
+          </div>
+
+          <div class="columnUploadButtonFlexible">
+            <div class="buttonHeader">
+              <p class="title">{{ label }}</p>
+              <div class="require" *ngIf="showIsRequired">
+                <span>* Documento requerido</span>
+              </div>
+              <p class="description" *ngIf="description.length > 0">{{ description }}</p>
+            </div>
+            <app-edit-list-of-files
+              [files]="files"
+              [requiredSignatures]="requiredSignatures"
+              [totalPeopleRequiredToSign]="totalPeopleRequiredToSign"
+              (dropAllEvent)="dropAllEvent()"
+              (dropFileOutput)="dropFile($event)"
+            ></app-edit-list-of-files>
+          </div>
+        </div>
+      </ng-template>
+    </slb-dropzone>
+  </div>
+</div>
+
+<div class="uploadDropDisable" *ngIf="editDisabled">
+  <div class="uploadDropColumnFlexible">
+    <div class="containerUploadButton">
+      <div class="columnUploadButtonFlexible">
+        <div class="buttonHeader">
+          <p class="title">{{ label }}</p>
+          <div class="require" *ngIf="showIsRequired">
+            <span>* Documento requerido</span>
+          </div>
+          <p class="description" *ngIf="description.length > 0">{{ description }}</p>
+        </div>
+
+        <app-show-list-of-files 
+          [files]="files" 
+          [filesMapped]="filesMapped"
+          [requiredSignatures]="requiredSignatures"
+          [totalPeopleRequiredToSign]="totalPeopleRequiredToSign"
+        ></app-show-list-of-files>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="uploadDrop" *ngIf="false">
+  <app-load-double-ask-dialog
+    *ngIf="showDoubleDropVerification"
+    [areMultipleFiles]="true"
+    (remove)="setDoubleVerificationAnswer($event)"
+    #askVerificationAll
+  ></app-load-double-ask-dialog>
+  <app-load-double-ask-dialog
+    *ngIf="showDoubleDropVerification"
+    (remove)="setDoubleVerificationAnswer($event)"
+    #askVerificationOne
+  ></app-load-double-ask-dialog>
+  <div
+    class="uploadDropColumnFlexible"
+    [ngStyle]="
+      (setUnderline && {
+        animation: 'fadeInOut 3s forwards',
+      }) ||
+      null
+    "
+  >
+    <slb-dropzone
+      #dropzone
+      [dropzoneTemplate]="dropzoneTmpl"
+      [multiple]="true"
+      [accept]="extension"
+      (onFilesChange)="onFilesChange($event)"
+      [canRemoveAttachment]="false"
+      [showAttachedFiles]="false"
+      [disabled]="files.length > 0 && !keepOldFiles"
+    >
+      <ng-template #dropzoneTmpl>
+        <div class="containerUploadButton">
+          <div class="columnUploadButtonStatic">
+            <button mat-fab class="uploadButton" type="button" (click)="({})">
+              <mat-icon>upload</mat-icon>
+            </button>
+          </div>
+
+          <div class="columnUploadButtonFlexible">
+            <p class="title">{{ label }}</p>
+            <div class="require" *ngIf="showIsRequired">
+              <span>* Documento requerido</span>
+            </div>
+            <div class="files">
+              <div class="containerNameFile" *ngFor="let file of files; let i = index">
+                <div
+                  [ngClass]="{
+                    filesInformationFull: !hasAtLeatOneSign(),
+                    filesInformationHalf: hasAtLeatOneSign(),
+                  }"
+                >
+                  <mat-icon
+                    *ngIf="
+                      progress[file.name] !== undefined &&
+                      progress[file.name].completed &&
+                      hasAtLeatOneSign() &&
+                      !checkInvalidSigns(i)
+                    "
+                    class="completed-icon"
+                    >check</mat-icon
+                  >
+                  <mat-icon
+                    *ngIf="
+                      progress[file.name] !== undefined &&
+                      progress[file.name].completed &&
+                      hasAtLeatOneSign() &&
+                      checkInvalidSigns(i)
+                    "
+                    class="completed-icon"
+                    >close</mat-icon
+                  >
+                  <mat-icon
+                    *ngIf="
+                      progress[file.name] !== undefined &&
+                      progress[file.name].completed &&
+                      !hasAtLeatOneSign() &&
+                      checkInvalidSigns(i)
+                    "
+                    class="completed-icon"
+                    >check</mat-icon
+                  >
+                  <span
+                    #fileName
+                    class="fileName"
+                    (click)="
+                      file.type === 'application/pdf'
+                        ? showPreview(file, $event)
+                        : downloadFile(file)
+                    "
+                    >{{ reduceFileText(file.name) }}
+                  </span>
+
+                  <mat-icon
+                    *ngIf="file.type === 'application/pdf'"
+                    (click)="showPreview(file, $event); $event.stopPropagation()"
+                    >preview</mat-icon
+                  >
+                  <mat-icon
+                    *ngIf="file.type !== 'application/pdf'"
+                    (click)="downloadFile(file); $event.stopPropagation()"
+                    >download</mat-icon
+                  >
+                  <mat-icon
+                    *ngIf="showDoubleDropVerification"
+                    class="dropOneFile"
+                    (click)="openDoubleVerificationOne(i, file, $event); $event.stopPropagation()"
+                    >delete</mat-icon
+                  >
+                  <mat-icon
+                    *ngIf="!showDoubleDropVerification"
+                    class="dropOneFile"
+                    (click)="dropFile(i, file, $event); $event.stopPropagation()"
+                    >delete</mat-icon
+                  >
+                  <div
+                    class="progress"
+                    *ngIf="
+                      progress[file.name] !== undefined &&
+                      progress[file.name].progress > 0 &&
+                      !progress[file.name].completed
+                    "
+                  >
+                    <label for="progress-{{ file.name }}"
+                      >Progreso de Subida: {{ progress[file.name].progress }}%</label
+                    >
+                    <progress
+                      id="progress-{{ file.name }}"
+                      [value]="progress[file.name].progress"
+                      max="100"
+                    >
+                      {{ progress[file.name].progress }}%
+                    </progress>
+                  </div>
+                </div>
+                <div
+                  class="filesSigns"
+                  *ngIf="hasSignsArr[i] && file.type === 'application/pdf' && hasAtLeatOneSign()"
+                >
+                  <div class="is-valid-sign-container">
+                    <app-signs-popover
+                      [slbPopoverTrigger]="'click'"
+                      [hideArrow]="true"
+                      [slbPopoverCloseOnClick]="true"
+                      [slbPopoverCloseOnEscape]="true"
+                      [slbPopoverDisabled]="false"
+                      [useTargetElement]="false"
+                      [slbPopoverBackdropClass]="'cdk-overlay-dark-backdrop'"
+                      [slbPopoverHasBackdrop]="true"
+                      [hasSigns]="hasSignsArr[i]"
+                      [invalidSigns]="checkInvalidSigns(i)"
+                      (click)="$event.stopPropagation()"
+                    >
+                      <app-show-valid-signs
+                        [unzipSigns]="filesSigns[i].signs"
+                        [annots]="filesSigns[i].annots"
+                        *ngIf="filesSigns[i].signs.length > 0"
+                      >
+                      </app-show-valid-signs>
+                    </app-signs-popover>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </slb-dropzone>
+  </div>
+  <div class="uploadDropColumnClose">
+    <button
+      *ngIf="showDoubleDropVerification"
+      mat-fab
+      class="cancelUploadButton"
+      type="button"
+      (click)="openDoubleVerificationAll()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button
+      *ngIf="!showDoubleDropVerification"
+      mat-fab
+      class="cancelUploadButton"
+      type="button"
+      (click)="dropAllFiles()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div class="uploadDisable" *ngIf="false">
+  <div class="uploadDropColumnFlexible">
+    <div class="containerUploadButton">
+      <div class="columnUploadButtonStatic"></div>
+
+      <div class="columnUploadButtonFlexible">
+        <p class="title">{{ label }}</p>
+        <div class="files">
+          <div class="containerNameFile" *ngFor="let file of files; let i = index">
+            <div
+              [ngClass]="{
+                filesInformationFull: !hasAtLeatOneSign(),
+                filesInformationHalf: hasAtLeatOneSign(),
+              }"
+            >
+              <span
+                class="fileNameDisable"
+                (click)="
+                  file.type === 'application/pdf' ? showPreview(file, $event) : downloadFile(file)
+                "
+                >{{ file.name }}
+              </span>
+              <mat-icon
+                *ngIf="file.type === 'application/pdf'"
+                (click)="showPreview(file, $event); $event.stopPropagation()"
+                >preview</mat-icon
+              >
+              <mat-icon
+                *ngIf="file.type !== 'application/pdf'"
+                (click)="downloadFile(file); $event.stopPropagation()"
+                >download</mat-icon
+              >
+            </div>
+            <div
+              class="filesSigns"
+              *ngIf="hasSignsArr[i] && file.type === 'application/pdf' && hasAtLeatOneSign()"
+            >
+              <div class="is-valid-sign-container">
+                <app-signs-popover
+                  [slbPopoverTrigger]="'click'"
+                  [hideArrow]="true"
+                  [slbPopoverCloseOnClick]="true"
+                  [slbPopoverCloseOnEscape]="true"
+                  [slbPopoverDisabled]="false"
+                  [useTargetElement]="false"
+                  [slbPopoverBackdropClass]="'cdk-overlay-dark-backdrop'"
+                  [slbPopoverHasBackdrop]="true"
+                  [hasSigns]="hasSignsArr[i]"
+                  [invalidSigns]="checkInvalidSigns(i)"
+                  (click)="$event.stopPropagation()"
+                >
+                  <app-show-valid-signs
+                    [unzipSigns]="filesSigns[i].signs"
+                    [annots]="filesSigns[i].annots"
+                    *ngIf="filesSigns[i].signs.length > 0"
+                  >
+                  </app-show-valid-signs>
+                </app-signs-popover>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="uploadDisableNoStyles" *ngIf="false">
+  <div class="uploadDropColumnFlexible">
+    <div class="containerUploadButton">
+      <div class="columnUploadButtonStatic"></div>
+
+      <div class="columnUploadButtonFlexible">
+        <p class="title">{{ label }}</p>
+        <div class="files">
+          <div class="containerNameFile" *ngFor="let file of files">
+            <span
+              class="fileName"
+              (click)="
+                file.type === 'application/pdf' ? showPreview(file, $event) : downloadFile(file)
+              "
+              >{{ file.name }}
+            </span>
+            <mat-icon
+              *ngIf="file.type === 'application/pdf'"
+              (click)="showPreview(file, $event); $event.stopPropagation()"
+              >preview</mat-icon
+            >
+            <mat-icon
+              *ngIf="file.type !== 'application/pdf'"
+              (click)="downloadFile(file); $event.stopPropagation()"
+              >download</mat-icon
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
