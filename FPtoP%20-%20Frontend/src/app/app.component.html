@@ -1,9 +1,0 @@
-<div *ngIf="isLoading" class="overlay">
-  <div class="containerOverlay">
-    <mat-spinner diameter="100"></mat-spinner>
-    <div *ngIf="currentRequest">
-      <p>Cargando {{ currentRequest.headers.get('Url-name') }}</p>
-    </div>
-  </div>
-</div>
-<router-outlet></router-outlet>
