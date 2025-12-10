@@ -1,0 +1,176 @@
+@import "src/themes/base/base-theme";
+@import "@slb-dls/angular-material/assets/styles/theming/dls-palette";
+@import "src/themes/light/variables";
+
+@include theme-base($dls-app-light-theme, $app-theme-config);
+@import "ag-grid-community/styles/ag-grid.css";
+@import "ag-grid-community/styles/ag-theme-quartz.css";
+
+.column-description {
+  padding: 20px 0 0 0 !important;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px 2%;
+
+  .column {
+    flex: 1 !important;
+    margin: 10px;
+    box-sizing: border-box;
+    &.description {
+      text-align: justify;
+      flex: 0 0 50% !important;
+    }
+    p {
+      margin: 0px;
+    }
+    align-items: center;
+    &.excel-upload {
+      display: grid;
+      padding-right: 20px;
+      justify-content: end;
+    }
+  }
+}
+
+h3.secondaryTitle {
+  font-size: 20px;
+}
+.containerOptionsSheet{
+  margin-bottom: 10px;
+  button{
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    .column {
+      flex: 1 1 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+.mat-step-icon {
+  &.mat-step-icon-state-done {
+    background-color: map-get($colors, shayaSecond) !important;
+    color: white !important;
+  }
+  &.mat-step-icon-state-edit {
+    background-color: map-get($colors, shayaSecond) !important;
+    color: white !important;
+  }
+  &.mat-step-icon-state-number {
+    background-color: map-get($colors, shayaSecond) !important;
+    color: white !important;
+    &.mat-step-icon-selected {
+      background-color: map-get($colors, shayaRed) !important;
+      color: white !important;
+    }
+  }
+}
+
+.mat-step-icon .mat-icon {
+  display: contents !important;
+}
+
+.insert-information-description {
+  .descriptions {
+    text-align: center;
+  }
+
+  .returnProcess {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+  }
+}
+
+.container-information-description {
+  .descriptions {
+    text-align: center;
+  }
+
+  .correct-item p {
+    color: map-get($colors, shayaSecond) !important;
+  }
+
+  .incorrect-body {
+    .incorrect-item {
+      color: map-get($colors, shayaRed);
+      p {
+        margin: 0;
+      }
+    }
+
+    .incorrect-value {
+      color: map-get($colors, shayaBlue);
+      p {
+        margin: 0;
+      }
+      span {
+        color: map-get($colors, shayaRed);
+      }
+    }
+  }
+
+  .add-element {
+    padding: 20px 5% 20px 5%;
+    .element {
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 17px;
+        padding-bottom: 20px;
+      }
+
+      .dropdown {
+        display: flex;
+        padding: 10px 0px 10px 0px;
+      }
+
+      .column-elements {
+        .error-item {
+          padding: 10px 0px 10px 0px;
+          flex-wrap: wrap;
+          gap: 20px;
+
+          .elements-error-properties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+          }
+
+          .element-data {
+            padding-top: 20px;
+          }
+        }
+      }
+    }
+
+    .element-card {
+      padding-top: 0;
+      mat-card-actions {
+        justify-content: center;
+      }
+      mat-card-content {
+        .icons {
+          border-radius: 50%;
+          background-color: map-get($colors, shayaBlue);
+          color: white;
+
+          mat-icon {
+            margin: 7px;
+            display: flex;
+          }
+        }
+      }
+    }
+  }
+}

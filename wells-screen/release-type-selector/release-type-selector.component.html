@@ -1,0 +1,16 @@
+<app-custom-shaya-header [headerTitle]="'Ingreso de información'"></app-custom-shaya-header>
+<div class="selector-container">
+  <h2 class="selector-title">Selecciona un tipo de liberación</h2>
+  <p class="selector-subtitle">
+    Se tiene varias opciones de liberaciones disponibles. Por favor, elige una para continuar.
+  </p>
+  <div class="options-wrapper">
+    <app-button
+      *ngFor="let option of options"
+      (click)="selectReleaseType(option.id)"
+      mat-raised-button
+      label="{{option.name}}"
+    >
+    </app-button>
+  </div>
+</div>
